@@ -18,7 +18,7 @@ cp -rf * ~/.ecmsc.d/
 ### Config(init.el)
 
 ```js
-(add-to-list 'load-path (expand-file-name (concat EamcsConfDir ".emacs.d/lisp/")))call plug#end()
+(add-to-list 'load-path (expand-file-name (concat EamcsConfDir ".emacs.d/lisp/")))
 
 ;;; Package Management
 (require 'init-elpa)
