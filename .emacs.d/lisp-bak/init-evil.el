@@ -1,17 +1,19 @@
-;;;---- init-evil.el --- Org model settings
+;;;---- init-evil.el --- vim model settings
 
-(require 'org)
-(setq org-src-fontify-natively t)			;;hlight
-(setq org-agenda-files '("~/org"))
-(global-set-key (kbd "C-c a") 'org-agenda)	;;map kbd key
+;;; Vim -- evil (also in init-packages.el)
+(require-package 'evil)	
+(use-package evil
+	:config
+	(evil-mode 1)
+	)
 
 (setq evil-default-state 'emacs)
 (define-key evil-emacs-state-map (kbd "C-o") 'evil-execute-in-normal-state)
 
-;(define-key evil-insert-state-map (kbd "C-d") 'evil-change-to-previous-state)
-;(define-key evil-normal-state-map (kbd "C-d") 'evil-force-normal-state)
-;(define-key evil-replace-state-map (kbd "C-d") 'evil-normal-state)
-;(define-key evil-visual-state-map (kbd "C-d") 'evil-exit-visual-state)
+; (define-key evil-insert-state-map (kbd "C-d") 'evil-change-to-previous-state)
+; (define-key evil-normal-state-map (kbd "C-d") 'evil-force-normal-state)
+; (define-key evil-replace-state-map (kbd "C-d") 'evil-normal-state)
+; (define-key evil-visual-state-map (kbd "C-d") 'evil-exit-visual-state)
 
 (defun evil-execute-in-normal-state ()
 "Execute the next command in Normal state. C-o o works in insert-mode"
@@ -37,5 +39,5 @@ universal-argument-other-key)))
 (evil-normal-state)
 (evil-echo "Switched to Normal state for the next command ...")) 
 
-(provide 'init-org)
-;;; init-org.el ends here
+(provide 'init-evil)
+;;; init-evil.el ends here

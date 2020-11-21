@@ -4,9 +4,9 @@
 ;;(setq custom-file (expand-file-name ".emacs.d/lisp/custom.el" load-path))				;;custom_config
 
 ;;; Shell Bash Env
-(setq explicit-shell-file-name "D:/Program Files (x86)/Git/bin/bash.exe")
-(setq shell-file-name explicit-shell-file-name)				;;Emacs default shell name: shell-file-name
-(add-to-list 'exec-path "D:/Program Files (x86)/Git/bin/")
+;(setq explicit-shell-file-name "D:/Program Files (x86)/Git/bin/bash.exe")
+;(setq shell-file-name explicit-shell-file-name)				;;Emacs default shell name: shell-file-name
+;(add-to-list 'exec-path "D:/Program Files (x86)/Git/bin/")
 
 
 ;;; Package Management
@@ -15,11 +15,11 @@
 (require 'init-startup)
 (require 'init-packages)
 (require 'init-ui)
+(require 'init-evil)
 (require 'init-kbd)
-;(require 'init-org)
+(require 'init-web)
 ;(require 'init-python)
-;(require 'init-init-web)
-(require 'custom)
+;(require 'custom)
 
 
 ;;; init.el ends here
