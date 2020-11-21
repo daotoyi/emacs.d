@@ -59,12 +59,13 @@
 (use-package emacs
   :if (display-graphic-p)
   :config
-  (if *is-windows*		 ;; Font settings
-    (progn
-      (set-face-attribute 'default nil :font "Inconsolata 12")
-      (dolist (charset '(kana han symbol cjk-misc bopomofo))
-        (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Inconsolata" :size 12))))
-  (set-face-attribute 'default nil :font "Inconsolata 12"))
+;;  (if *is-windows*		 ;; Font settings
+;;    (progn
+;;      (set-face-attribute 'default nil :font "Inconsolata 12")
+;;      (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;        (set-fontset-font (frame-parameter nil 'font) charset (font-spec :family "Inconsolata" :size 12))))
+;;  (set-face-attribute 'default nil :font "Inconsolata 12"))
+;;;; this part on linux cannot pass well.
   (setq display-line-numbers-type 'relative)	;; or visual
   (global-display-line-numbers-mode t)			;; (global-linum-mode t)
   (defalias 'yes-or-no-p 'y-or-n-p)				;; yes = y; no = n-p
