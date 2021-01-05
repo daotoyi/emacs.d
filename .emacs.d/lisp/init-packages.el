@@ -1,111 +1,120 @@
-;; ----init-package.el---- load the plugin
+;;; init-packages.el --- load the plugin
+;;; Commentary:
 
 ;;; --- Kind of Install Method---
 ; (require-package 'use-package)		;; define in elpa.el
 ; (require 'use-package-autoloads)		;; default
-; (package-install 'use-package)			;; default
-
-(setq package-check-signature nil) 			;; Occasionally, a signature verification failure occurs
+; (package-install 'use-package)		;; default
 
 ;;; cl - Common Lisp Extension
 ;  (require 'cl)		;; deprecated
 
-;;; Add Packages ---  Another Method --->> Option
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-; (defvar my/packages '(
-;	;; --- Use-package ---
-;		use-package
-;		emacs
-;	 ;; --- Themes ---
-;       monokai-theme
-;		smart-mode-line
-;       ; solarized-theme
-;	;; ---Search && Editor ---
-;		ivy
-;		counsel
-;		swiper
-;		smartparens
-;		smooth-scrolling
-;		hungry-delete
-;		recent
-;		smex
-;		; helm
-;		ace-jump-mode
-;	;; --- Auto-completion ---
-;		company
-;	;; --- Syntax ---
-;		flycheck
-;	;; --- Major Mode ---
-;		evil
-;		; org-mode
-;		; js2-mode
-;		; markdown-mode
-;		exec-path-from-shell
-;	;; --- Miojor Mode ---
-;		which-key
-;		crux
-;	;; --- Python ---
-;		; elpy
-;	;; --- Web ---		
-;		; web-mode
-;		; emmet-mode
-;	;; --- Other ---		
-;		vterm
-;		magit
-;    ) 
-;	"Default packages")
-;
-; (defun my/packages-installed-p ()
-;     (loop for pkg in my/packages
-;           when (not (package-installed-p pkg)) do (return nil)
-;           finally (return t)))
-;
-; (unless (my/packages-installed-p)
-;     (message "%s" "Refreshing package database...")
-;     (package-refresh-contents)
-;     (dolist (pkg my/packages)
-;       (when (not (package-installed-p pkg))
-;         (package-install pkg))))
-;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;;; Load use-package manager
-(require-package 'use-package)
-(eval-and-compile
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+(eval-and-compile                       ;; avoid warning when compile
     (setq use-package-always-ensure t)
-;;    (setq use-package-always-defer t)       ;; set it will bug in startup. 
+    (setq use-package-always-defer t)
     (setq use-package-always-demand nil)
     (setq use-package-expand-minimally t)
     (setq use-package-verbose t)
 )
 	
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require-package 'smex)
-(require-package 'ace-jump-mode)
-(require-package 'smartparens)
+(require 'unicad)            ;;; recognize encoding automaticly
+(require 'lazy-set-key)      ;;; unavalible from source install
+
+(use-package fcitx)          ;;; fcixt --- switch ficxt when in or out evi-mode 
+(use-package magit)
+(use-package unicad)         ;;; recognize encoding automaticly
+(use-package markdown-mode)
+(use-package smartparens)
+
+(use-package ido
+  :config
+  (ido-mode t)
+  (ido-everywhere t)
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-virtual-buffers t))
+
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
 
 
-;;; Theme monokai
-(require-package 'monokai-theme) 				;;molokai-theme is also exist; good as well.
+;;; molokai-theme is also exist; good as well.
 (use-package monokai-theme 
   :ensure t
+  :defer nil
   :load-path "themes"
   :init
   (setq monokai-theme-kit t)
   :config
-  (load-theme 'monokai t)
-  )
+  (load-theme 'monokai t))
 
+(use-package smooth-scrolling
+  :config
+  (smooth-scrolling-mode 1)
+  (setq smooth-scroll-margin 5))
 
-;;; Theme smart-mode
-(require-package 'smart-mode-line) 
-(use-package smart-mode-line
-    :init
-    (setq sml/no-confirm-load-theme t)
-    (setq sml/theme 'respectful)
-    (sml/setup))
+(use-package popwin
+  :config
+  (popwin-mode 1))
 
+;;; MapKey
+(use-package which-key
+    :defer 1 
+    :config (which-key-mode))
+  
+(use-package flycheck
+  :hook (after-init . global-flycheck-mode))		        ;; Global
+  ;; :hook (prog-mode . flycheck-mode))				;; Progress mode
+
+;; (ido-mode t)   ;; projectile need it
+(use-package projectile
+  :defer 1 
+  :config
+  (setq projectile-cache-file (expand-file-name ".cache/projectile.cache" user-emacs-directory))
+  (projectile-mode 1)
+  (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))    ;; define leader key
+
+(use-package helm-projectile
+  :defer 2 
+  :if (functionp 'helm)                ;; if use helm, show projectile option with helm
+  :config
+  (helm-projectile-on))
+
+;; dired+ settings.
+(require 'dired)
+; (require 'dired+)        ;; need install
+; (require 'dired-sort)    ;; need install
+;; (ido-mode 1)    ;; dired need it
+; (global-dired-hide-details-mode -1)           ;; set after dired+
+; (setq dired-recursive-deletes 'always)	;; delete without confirm
+; (setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'top)             ;; top directory need confirm 
+(setq dired-recursive-copies 'top)
+(setq dired-isearch-filenames t)
+(put 'dired-find-alternate-file 'disabled nil)	;; Dired Mode cache
+
+; (defined-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+(with-eval-after-load 'dired			;; delay load
+    (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Text Edit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package drag-stuff
+  :bind (("<M-up>". drag-stuff-up)
+         ("<M-down>" . drag-stuff-down)))
+		   
+;; (use-package helm
+;;   :bind (("M-x" . helm-M-x)    ;; = (bind-key "M-x" #'helm-M-x) 
+;;         ("C-x C-f" . helm-find-files))
+;;   :config
+;;   (helm-mode 1))   ;; global set
 
 ;;; -----ivy-counsel-swiper----- 
 ;; 1 Enhance Search---ivy
@@ -120,9 +129,16 @@
         ivy-count-format "%d/%d "
         enable-recursive-minibuffers t
         ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
+
+;;; 2 Enhance Search---swiper		 
+(use-package swiper
+  :after ivy
+  :bind (("C-s" . swiper)
+         ("C-r" . swiper-isearch-backward))
+  :config (setq swiper-action-recenter t
+                swiper-include-line-number-in-search t))
   
-;;; 2 Enhance Search---counsel
-(require-package 'counsel)
+;;; 3 Enhance Search---counsel
 (use-package counsel
   :after (ivy)
   :bind (("M-x" . counsel-M-x)
@@ -130,19 +146,118 @@
          ("C-c f" . counsel-recentf)
          ("C-c g" . counsel-git)))
 
-;;; 3 Enhance Search---swiper		 
-(require-package 'swiper)
-(use-package swiper
-  :after ivy
-  :bind (("C-s" . swiper)
-         ("C-r" . swiper-isearch-backward))
-  :config (setq swiper-action-recenter t
-                swiper-include-line-number-in-search t))
+;; (use-package smex
+;;   :config
+;;   ;; (smex-initialize)  ;; Can be omitted. This might cause a (minimal) delay
+;;   ;;; below M-x can be replaced by counsel-M-x.
+;;   (global-set-key(kbd "M-x") 'smex)
+;;   (global-set-key(kbd "M-X") 'smex-major-mode-commands)
+;;   (global-set-key(kbd "C-c C-c M-x") 'execute-extended-command)   ;; go back old M-x.
+;;   )
 
-				
-;;; Auto-complete	
-(require-package 'company)		
+
+;;; this function maybe replaced by  counsel 
+;;  (use-package recentf
+;;      :defer 2 
+;;      :config
+;;      (recentf-mode 1 )
+;;      (setq recentf-max-saved-items 200
+;;  	recentf-max-menu-items 15)				;; visit NO. files 10
+;;      (global-set-key (kbd "<F10>") 'recentf-open-files)
+;;      (global-set-key (kbd "C-x C-r") 'recentf-open-files)	;; replaced by  counsel 
+;;      (setq kill-ring-max 200))			;; record of files deleted 200
+
+(use-package ace-jump-mode
+  :defer 2 
+  :config
+  (define-key global-map (kbd "C-c SPC" ) 'ace-jump-mode)
+  (add-to-list 'load-path "which-folder-ace-jump-mode-file-in/"))
+
+(use-package avy 
+  :defer 2 
+  :config
+  ;;; below be set in init-evil, Leader <SPC>.
+  ;; (global-set-key (kbd "SPC j c") 'avy-goto-char)
+  ;; (global-set-key (kbd "SPC j w") 'avy-goto-word)
+  ;; (global-set-key (kbd "PSC j l") 'avy-goto-line)
+  )
+
+(use-package ace-pinyin
+  :defer 2 
+  :config
+  ;; ace-pinyin-use-avy should be set BEFORE ace-pinyin-globa-mode or turn-on-ace-pinyin-mode or turn-off-ace-pinyin-mode
+  (setq ace-pinyin-use-avy t) ;; uncomment if you want to use `avy'
+  (ace-pinyin-global-mode +1)
+  )
+
+(use-package smart-mode-line
+    :init
+    (setq sml/no-confirm-load-theme t)
+    (setq sml/theme 'respectful)
+    (sml/setup))
+
+;;; add space between English and Chines.
+(use-package pangu-spacing
+  :config
+  (global-pangu-spacing-mode 1)
+  ;; only insert real whitespace in some specific mode, but just add virtual space in other mode
+  (add-hook 'org-mode-hook
+            '(lambda ()
+               (set (make-local-variable 'pangu-spacing-real-insert-separtor) t)))
+  )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; yasnippet --- tempaltes ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package yasnippet
+  :defer 1 
+  :config
+  ; (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+    ;; default ("~/.emacs.d/snippets" yas-installed-snippets-dir) in yasnippet new version, maybe need not mannually set. 
+    ;; if set it, yasnippet only query thsi path, or will query default path and ~/.emacs.d/snippets.
+  (yas-global-mode 1))    ;; global
+
+(use-package yasnippet-snippets   ;; tempaltes lib
+  :defer 1 
+  :after (yasnippet))
+
+;; tempaltes
+(setq template-home-directory '"~/.emacs.d/templates")
+
+(use-package auto-yasnippet
+  :defer 1 
+  :bind
+  (("C-c & w" . aya-create)
+   ("C-c & y" . aya-expand))
+     ;; (global-set-key (kbd "H-w") #'aya-create)
+     ;; (global-set-key (kbd "H-y") #'aya-expand)
+  :config
+  (setq aya-persist-snippets-dir (concat user-emacs-directory "/snippets")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; completion ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;; gccsense or semantic, but gccsense suppourt C/C++
+;;  if choose gccsense. only replace (ac-complete-semantic）with (ac-complete-gccsense)
+(defun ac-complete-semantic-self-insert (arg)
+  (interactive "p")
+  (self-insert-command arg)
+  (ac-complete-semantic))
+
+(defun my-c-mode-ac-complete-hook ()
+  (local-set-key "." 'ac-complete-semantic-self-insert)
+  (local-set-key ">" 'ac-complete-semantic-self-insert))
+
+(add-hook 'c-mode-common-hook 'my-c-mode-ac-complete-hook)
+
+(use-package popup) 
+(use-package auto-complete
+  :defer
+  :config
+  (ac-config-default)
+  (global-auto-complete-mode t)
+  (setq tab-always-indent 'complete)  ;; tab, first indent, second complete.
+  )
+
 (use-package company
+  :defer 2 
   :config
   (setq company-dabbrev-code-everywhere t
         company-dabbrev-code-modes t
@@ -151,86 +266,56 @@
         company-dabbrev-ignore-case t
         company-dabbrev-other-buffers 'all
         company-require-match nil
-        company-minimum-prefix-length 2
+        company-minimum-prefix-length 1 
         company-show-numbers t
         company-tooltip-limit 20
-        company-idle-delay 0
-        company-echo-delay 0
+        company-tooltip-align-annotations t
         company-tooltip-offset-display 'scrollbar
+	company-idle-delay 0
+        company-echo-delay 0
         company-begin-commands '(self-insert-command))
   (push '(company-semantic :with company-yasnippet) company-backends)
-  :hook ((after-init . global-company-mode)))
-  
-  
-;;; Syntax Check
-(require-package 'flycheck)
-(use-package flycheck
-  :hook (after-init . global-flycheck-mode))		;;Global
-  ;  :hook (prog-mode . flycheck-mode))				;; Progress mode
- 
- 
-;;; MapKey
-(require-package 'which-key)
-(use-package which-key
-  :defer 2
-  :config (which-key-mode))
+  :hook ((after-init . global-company-mode)))        ;; =  (add-hook 'after-init-hook #'global-company-mode) 
 
-  
-;;; Text Edit
-(require-package 'crux)
-(use-package crux
-    :bind ("C-c k" . crux-smart-kill-line))			;;delete current line
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(require-package 'hungry-delete)	
-(use-package hungry-delete
-    :bind (("C-c DEL" . hungry-delete-backward)		;;delete 
-           ("C-c d" . hungry-delete-forward)))
-		   
-
-;;; Open recent files	
-(require-package 'recentf)
-(use-package recentf
-	:defer 1
-	:config
-	(recentf-mode 1 )
-	(setq recentf-max-saved-items 200
-		recentf-max-menu-items 10)							;; visit NO. files 10
-	(global-set-key (kbd "<F10>") 'recentf-open-files)		;; this function maybe replaced by  counsel 
-	;;(global-set-key (kbd "C-x C-r") 'recentf-open-files)
-	(setq kill-ring-max 200))								;; record of files deleted 200
-	
-	
-;;; Vim -- evil
-(require-package 'evil)	
-(use-package evil
-	:config
-	(evil-mode 1)
-	)
-
-
-;;; Org-mode
-(use-package org
-  :config
-  (setq org-startup-indented t
-	    org-todo-keywords '((sequence "TODO" "DOING" "DONE"))
-	    org-todo-keyword-faces '(("DOING" . "blue")))
+(use-package lsp-mode
+  :commands (lsp)   ;; defer load, when lsp called
+  :hook (((ruby-mode
+           php-mode
+           python-mode
+           typescript-mode
+           ) . lsp))
+  :init 
+  (setq lsp-auto-configure t    ;; try automaticly config itself
+        lsp-auto-guess-root t   ;; try automaticly guess root/dir
+        lsp-idle-delay 0.500    ;; how much time, after refresh info form server
+        lsp-session-file "~/.emacs.d/.cache/lsp-sessions") ;; cache location
   )
-  
-  
-;;; markdown-mode
-(require-package 'markdown-mode)
-(use-package markdown-mode)
 
+(use-package lsp-ui   ;; show content
+  :after (lsp-mode)
+  :commands (lsp-ui-mode)
+  :bind
+  (:map lsp-ui-mode-map
+        ([remap xref-find-references] . lsp-ui-peek-find-references)    ;; query symbol reference.(use  LSP ,generally M-. )
+        ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)  ;; query symbol define (use  lsp ,generally m-? )
+        ("c-c u" . lsp-ui-imenu))
+  :hook (lsp-mode . lsp-ui-mode)   ;; auto activate when lsp activated
+  :init
+  ;; https://github.com/emacs-lsp/lsp-mode/blob/master/docs/tutorials/how-to-turn-off.md
+  (setq lsp-enable-symbol-highlighting t
+        lsp-ui-doc-enable t
+        lsp-lens-enable t))
 
-;;; magit
-(require-package 'magit)
-(use-package magit)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;; vterm    ;;"VTerm needs module support.  Please compile Emacs with\n  the --with-modules option!
+;; (use-package vterm)
+;; (vterm-module-compile) 
 
-;;; vterm		;;"VTerm needs module support.  Please compile Emacs with\n  the --with-modules option!
-; (require-package 'vterm)
-; (use-package vterm)
+;; (use-package multi-term)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; init-package.el ends here
 (provide 'init-packages)

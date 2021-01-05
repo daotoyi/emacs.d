@@ -1,10 +1,7 @@
 ;;; init-web.el --- web settings
 
-;;; Commentary:
 
-;;; Code:
-
-
+;; (require-package 'web-mode)
 (use-package web-mode
   :mode ("\\.html\\'")
   :config

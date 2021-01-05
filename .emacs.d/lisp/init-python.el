@@ -1,3 +1,5 @@
+;;; init-python.el --- python environment
+;;; Commentary:
 
 (use-package python-mode
   :init (setq-default python-indent-offset 4
@@ -13,5 +15,6 @@
                          (require 'lsp-python-ms)
                          (lsp-deferred))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (provide 'init-python)
 ;;; init-python.el ends here
