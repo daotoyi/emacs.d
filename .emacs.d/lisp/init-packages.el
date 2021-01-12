@@ -26,39 +26,32 @@
 
 (require 'unicad)            ;;; recognize encoding automaticly
 (require 'lazy-set-key)      ;;; unavalible from source install
+(require 'find-by-pinyin-dired)
 
-(use-package fcitx)          ;;; fcixt --- switch ficxt when in or out evi-mode 
 (use-package magit)
 (use-package unicad)         ;;; recognize encoding automaticly
 (use-package markdown-mode)
 (use-package smartparens)
 
-(use-package ido
+(use-package fcitx)          ;;; fcixt --- switch ficxt when in or out evi-mode 
+(use-package sis             ;;; smart-input-source
   :config
-  (ido-mode t)
-  (ido-everywhere t)
-  (setq ido-enable-flex-matching t)
-  (setq ido-use-virtual-buffers t))
+  (sis-global-cursor-color-mode t)
+  (sis-ism-lazyman-config nil "rime" 'native)
+  (sis-global-respect-mode t)
+  (sis-global-context-mode t)
+  (sis-global-inline-mode t))
+
+(use-package smooth-scrolling
+  :defer nil
+  :config
+  (setq scroll-margin 3
+	scroll-conservatively 10000)
+  )
 
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
-
-
-;;; molokai-theme is also exist; good as well.
-(use-package monokai-theme 
-  :ensure t
-  :defer nil
-  :load-path "themes"
-  :init
-  (setq monokai-theme-kit t)
-  :config
-  (load-theme 'monokai t))
-
-(use-package smooth-scrolling
-  :config
-  (smooth-scrolling-mode 1)
-  (setq smooth-scroll-margin 5))
 
 (use-package popwin
   :config
@@ -69,6 +62,32 @@
     :defer 1 
     :config (which-key-mode))
   
+(use-package ido
+  :config
+  (ido-mode t)
+  ;; (ido-everywhere t)  ;; if set, auto add d:/ before  emms-play-directory
+  (setq ido-enable-flex-matching t)
+  (setq ido-use-virtual-buffers t))
+
+;; dired+ settings.
+(require 'dired)
+(with-eval-after-load 'dired
+  (require 'dired+)
+  (require 'dired-x)    ;; go back upper directory(c-x c-j)
+  (require 'dired-sort)
+  ;; (ido-mode 1)    ;; dired need it && set in (use-package ido).
+  (global-dired-hide-details-mode -1)           ;; set after dired+
+  (setq dired-recursive-deletes 'always)	;; recursive（递归）
+  (setq dired-recursive-copies 'always)
+  (setq dired-recursive-deletes 'top)           ;; top directory need confirm 
+  (setq dired-recursive-copies 'top)
+  (setq dired-isearch-filenames t)
+
+  ;; dired mode hold on 1 buffer section
+  (put 'dired-find-alternate-file 'disabled nil)	;; Dired Mode cache
+  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+  )
+
 (use-package flycheck
   :hook (after-init . global-flycheck-mode))		        ;; Global
   ;; :hook (prog-mode . flycheck-mode))				;; Progress mode
@@ -83,26 +102,9 @@
 
 (use-package helm-projectile
   :defer 2 
-  :if (functionp 'helm)                ;; if use helm, show projectile option with helm
+  :if (functionp 'helm)          ;; if use helm, show projectile option with helm
   :config
   (helm-projectile-on))
-
-;; dired+ settings.
-(require 'dired)
-; (require 'dired+)        ;; need install
-; (require 'dired-sort)    ;; need install
-;; (ido-mode 1)    ;; dired need it
-; (global-dired-hide-details-mode -1)           ;; set after dired+
-; (setq dired-recursive-deletes 'always)	;; delete without confirm
-; (setq dired-recursive-copies 'always)
-(setq dired-recursive-deletes 'top)             ;; top directory need confirm 
-(setq dired-recursive-copies 'top)
-(setq dired-isearch-filenames t)
-(put 'dired-find-alternate-file 'disabled nil)	;; Dired Mode cache
-
-; (defined-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-(with-eval-after-load 'dired			;; delay load
-    (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Text Edit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -116,19 +118,20 @@
 ;;   :config
 ;;   (helm-mode 1))   ;; global set
 
-;;; -----ivy-counsel-swiper----- 
-;; 1 Enhance Search---ivy
+;;;; -----ivy-counsel-swiper----- 
+;;; 1 Enhance Search---ivy
 (use-package ivy
   :defer 1
   :demand
-  :hook (after-init . ivy-mode)
+  ;; :hook (after-init . ivy-mode)
   :config
-  (ivy-mode 1)
+  ;; (ivy-mode 1)    ;; if set it, emms-play-directory dir will go back upper.
   (setq ivy-use-virtual-buffers t
         ivy-initial-inputs-alist nil
         ivy-count-format "%d/%d "
         enable-recursive-minibuffers t
-        ivy-re-builders-alist '((t . ivy--regex-ignore-order))))
+        ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
+  )
 
 ;;; 2 Enhance Search---swiper		 
 (use-package swiper
@@ -156,16 +159,16 @@
 ;;   )
 
 
-;;; this function maybe replaced by  counsel 
-;;  (use-package recentf
-;;      :defer 2 
-;;      :config
-;;      (recentf-mode 1 )
-;;      (setq recentf-max-saved-items 200
-;;  	recentf-max-menu-items 15)				;; visit NO. files 10
-;;      (global-set-key (kbd "<F10>") 'recentf-open-files)
-;;      (global-set-key (kbd "C-x C-r") 'recentf-open-files)	;; replaced by  counsel 
-;;      (setq kill-ring-max 200))			;; record of files deleted 200
+;; this function maybe replaced by  counsel 
+ (use-package recentf
+     :defer 2 
+     :config
+     (recentf-mode 1 )
+     (setq recentf-max-saved-items 200
+ 	recentf-max-menu-items 15)				;; visit NO. files 10
+     (global-set-key (kbd "<F10>") 'recentf-open-files)
+     (global-set-key (kbd "C-x C-r") 'recentf-open-files)	;; replaced by  counsel 
+     (setq kill-ring-max 200))			;; record of files deleted 200
 
 (use-package ace-jump-mode
   :defer 2 
@@ -310,7 +313,54 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; vterm    ;;"VTerm needs module support.  Please compile Emacs with\n  the --with-modules option!
+;; (use-package bongo
+;;   :commands bongo-playlist
+;;   :general
+;;   (:states 'normal
+;; 	   :keymaps 'bongo-playlist-mode-map
+;; 	   "<return>" 'bongo-dwim
+;; 	   "i" 'bongo-insert-file
+;; 	   "p" 'bongo-play-previous
+;; 	   "n" 'bongo-play-next
+;; 	   "w" 'bongo-pause/resume
+;; 	   "d" 'bongo-dired-line
+;; 	   "e" 'bongo-append-enqueue
+;; 	   "s" 'bongo-seek
+;; 	   "r" 'bongo-rename-line
+;; 	   "v" 'volume)
+;;   :custom
+;;   (bongo-enabled-backends '(mplayer))
+;;   (bongo-default-directory "~/Music/")
+;;   (bongo-insert-album-covers t)
+;;   (bongo-album-cover-size 100)
+;;   (bongo-mode-line-indicator-mode nil))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; (use-package pdf-tools
+;;   :pin manual  ;; manual update
+;;   :config
+;;   (pdf-tools-install)
+;;   (setq-default pdf-view-display-size 'fit-width)
+;;   (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+
+;;   ;; make it default
+;;   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+;;      TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+;;      TeX-source-correlate-start-server t)
+;;   (add-hook 'TeX-after-compilation-finished-functions
+;; 	    #'TeX-revert-document-buffer)
+
+;;   ;; play well with Emacs linum-mode. 
+;;   (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
+  
+;;   :custom
+;;   ;; automatically annotate highlights
+;;   (pdf-annot-activate-created-annotations t "automatically annotate highlights")
+;;     ;; or (setq pdf-annot-activate-created-annotations t)
+;;    )
+
+;;; vterm    ;;"VTerm needs module support. compile Emacs with the --with-modules option!
 ;; (use-package vterm)
 ;; (vterm-module-compile) 
 

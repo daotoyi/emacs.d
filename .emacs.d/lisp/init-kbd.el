@@ -18,8 +18,15 @@
     (find-file "~/.emacs.d/init.el"))
 (global-set-key (kbd "<f6>") 'open-init-file)
 
+;; (global-set-key [(f7)] 'emms-smart-browse)  ;; set in init-emms.el
+;; <f10> set for rename buffer.
+
 ;; (global-set-key (kbd "C-c p s") 'helm-do-ag-project-root) 		;; ag search
 
+;; adjust text-scale
+(global-set-key (kbd "C-+") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-0") 'text-scale-adjust)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defconst my-projects-path "e:\\Refine\\Org" "My projects dir") 

@@ -10,8 +10,11 @@
 	    org-todo-keyword-faces '(("DOING" . "blue")))
   )
 
-(set-language-environment "UTF-8")		;; when save Chinese
 (setq org-agenda-files '("E:/Refine/Org/GTD/"))
+
+(add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))   ;; auto word wrap
+;; (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
+;; (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
 ;;; org-mode
 (global-set-key "\C-ca" 'org-agenda)
@@ -98,6 +101,6 @@
  '("xelatex -interaction nonstopmode %f"
   "xelatex -interaction nonstopmode %f"))
 
-
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (provide 'init-org)
 ;;; init-org.el ends here

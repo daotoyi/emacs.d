@@ -1,7 +1,7 @@
 ;;; emms-kbd.el —-- EMMS KeyBind Configuration
 ;;; Commentary:
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EMMS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EMMS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar one-key-menu-emms-alist nil "The 'one-key' menu alist for EMMS.")
 (defvar one-key-menu-emms-alist nil)
 (setq one-key-menu-emms-alist '( (("g" . "Playlist Go") . emms-playlist-mode-go)
@@ -29,7 +29,7 @@
       (interactive)
       (one-key-menu "EMMS" one-key-menu-emms-alist t))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EMMS Playlist Sort ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EMMS Playlist Sort ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 (defvar one-key-menu-emms-playlist-sort-alist nil
   "The 'one-key' menu alist for EMMS-PLAYLIST-SORT.")
 
@@ -51,7 +51,7 @@
     (interactive)
     (one-key-menu "EMMS-PLAYLIST-SORT" one-key-menu-emms-playlist-sort-alist t))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EMMS Playlist Mark ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EMMS Playlist Mark ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar one-key-menu-emms-playlist-mark-alist nil
    "The 'one-key' menu alist for EMMS-PLAYLIST-MARK.")
 
@@ -70,6 +70,8 @@
    (interactive)
    (one-key-menu "EMMS-PLAYLIST-MARK" one-key-menu-emms-playlist-mark-alist t))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ;;; # Emms Playlist # EMMS 播放列表
 (lazy-unset-key '("s" "m" "u" "M-<" "M->") emms-playlist-mode-map) ;卸载按键
 (lazy-set-key '( ("C-x C-s" . emms-playlist-save) ;保存播放列表
@@ -85,6 +87,7 @@
 		 ("M-y" . emms-playlist-mode-yank-pop) ;YANK弹出
 		 ("M-n" . emms-playlist-mode-next) ;下一个播放列表
 		 ("M-p" . emms-playlist-mode-previous) ;上一个播放列表
+		 
 		 ("a" . emms-playlist-mode-add-contents) ;向当前播放列表添加内容
 		 ("d" . emms-playlist-mode-kill-entire-track) ;从播放列表中移除当前TRACK
 		 ("C" . emms-playlist-mode-clear) ;清空当前的播放列表
@@ -99,6 +102,7 @@
 		 ("T" . emms-stop) ;停止
 		 ("Z" . emms-show) ;显示播放信息
 		 ("q" . emms-playlist-mode-bury-buffer) ;退出
+
 		 ("?" . describe-mode) ;帮助
 		 ("g" . emms-playlist-mode-center-current) ;跳转到当前播放TRACK
 		 ("G" . emms-jump-to-file) ;定位当前音乐文件的位置
@@ -142,49 +146,53 @@
 ; 		 ) emms-stream-mode-map )
 ; (lazy-set-key vi-move-key-alist emms-stream-mode-map) ;vi-move 的局部按键
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;; binding && global-set-key ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  
 ;;  (global-set-key (kbd "H-x") 'emms-playlist-mode-go)
-;;  
-;;  (global-set-key (kbd "C-c e t") 'emms-play-directory-tree)
-;;  (global-set-key (kbd "C-c e g") 'emms-play-directory)
-;;  (global-set-key (kbd "C-c e d") 'emms-play-dired)
-;;  (global-set-key (kbd "C-c e x") 'emms-start)
-;;  (global-set-key (kbd "C-c e v") 'emms-stop)
-;;  (global-set-key (kbd "C-c e n") 'emms-next)
-;;  (global-set-key (kbd "C-c e p") 'emms-previous)
-;;  (global-set-key (kbd "C-c e o") 'emms-show)
-;;  (global-set-key (kbd "C-c e h") 'emms-shuffle)
-;;  (global-set-key (kbd "C-c e e") 'emms-play-file)
-;;  (global-set-key (kbd "C-c e f") 'emms-play-playlist)
-;;  (global-set-key (kbd "C-c e SPC") 'emms-pause)
-;;  (global-set-key (kbd "C-c e a") 'emms-add-directory-tree)
-;;  
-;;  (global-set-key (kbd "C-c e r")   'emms-toggle-repeat-track)
-;;  (global-set-key (kbd "C-c e R")   'emms-toggle-repeat-playlist)
-;;  
-;;  (global-set-key (kbd "C-c e s u") 'emms-score-up-playing)
-;;  (global-set-key (kbd "C-c e s d") 'emms-score-down-playing)
-;;  (global-set-key (kbd "C-c e s o") 'emms-score-show-playing)
-;;  ;; playlist-mode-map
-;;  (define-key emms-playlist-mode-map (kbd "SPC") 'emms-pause)
-;;  (define-key emms-playlist-mode-map (kbd "+") 'emms-volume-raise)
-;;  (define-key emms-playlist-mode-map (kbd "-") 'emms-volume-lower)
-;;  (define-key emms-playlist-mode-map (kbd "<right>")
-;;    (lambda () (interactive) (emms-seek +10)))
-;;  (define-key emms-playlist-mode-map (kbd "<left>")
-;;    (lambda () (interactive) (emms-seek -10)))
-;;  (define-key emms-playlist-mode-map (kbd "<up>")
-;;    (lambda () (interactive) (emms-seek +60)))
-;;  (define-key emms-playlist-mode-map (kbd ("<down>"))
-;;    (lambda () (interactive) (emms-seek -60)))
-;;  (define-key emms-playlist-mode-map (kbd "S u") 'emms-score-up-file-on-line)
-;;  (define-key emms-playlist-mode-map (kbd "S d") 'emms-score-down-file-on-line)
-;;  (define-key emms-playlist-mode-map (kbd "S o") 'emms-score-show-file-on-line)
-;;  (define-key emms-playlist-mode-map (kbd "S l") 'emms-score-less-tolerant)
-;;  (define-key emms-playlist-mode-map (kbd "S m") 'emms-score-more-tolerant)
-;;  (define-key emms-playlist-mode-map (kbd "S t") 'emms-score-set-tolerance)
-;;  (define-key emms-playlist-mode-map (kbd "S s") 'emms-score-show-playing)
+  
+(global-set-key (kbd "C-c e a") 'emms-add-directory-tree)
+(global-set-key (kbd "C-c e t") 'emms-play-directory-tree)
+(global-set-key (kbd "C-c e g") 'emms-play-directory)
+(global-set-key (kbd "C-c e d") 'emms-play-dired)
+(global-set-key (kbd "C-c e v") 'emms-start)
+(global-set-key (kbd "C-c e x") 'emms-stop)
+(global-set-key (kbd "C-c e SPC") 'emms-pause)
+(global-set-key (kbd "C-c e n") 'emms-next)
+(global-set-key (kbd "C-c e p") 'emms-previous)
+(global-set-key (kbd "C-c e o") 'emms-show)
+(global-set-key (kbd "C-c e h") 'emms-shuffle)
+(global-set-key (kbd "C-c e e") 'emms-play-file)
+(global-set-key (kbd "C-c e f") 'emms-play-playlist)
+
+(global-set-key (kbd "C-c e r")   'emms-toggle-repeat-track)
+(global-set-key (kbd "C-c e R")   'emms-toggle-repeat-playlist)
+
+(global-set-key (kbd "C-c e s u") 'emms-score-up-playing)
+(global-set-key (kbd "C-c e s d") 'emms-score-down-playing)
+(global-set-key (kbd "C-c e s o") 'emms-score-show-playing)
+
+;; playlist-mode-map
+
+(define-key emms-playlist-mode-map (kbd "SPC") 'emms-pause)
+(define-key emms-playlist-mode-map (kbd "+") 'emms-volume-raise)
+(define-key emms-playlist-mode-map (kbd "-") 'emms-volume-lower)
+
+(define-key emms-playlist-mode-map (kbd "<right>")
+  (lambda () (interactive) (emms-seek +10)))
+(define-key emms-playlist-mode-map (kbd "<left>")
+  (lambda () (interactive) (emms-seek -10)))
+;; (define-key emms-playlist-mode-map (kbd "<up>")
+;;   (lambda () (interactive) (emms-seek +60)))
+;; (define-key emms-playlist-mode-map (kbd ("<down>"))
+;;   (lambda () (interactive) (emms-seek -60)))
+
+(define-key emms-playlist-mode-map (kbd "S u") 'emms-score-up-file-on-line)
+(define-key emms-playlist-mode-map (kbd "S d") 'emms-score-down-file-on-line)
+(define-key emms-playlist-mode-map (kbd "S o") 'emms-score-show-file-on-line)
+(define-key emms-playlist-mode-map (kbd "S l") 'emms-score-less-tolerant)
+(define-key emms-playlist-mode-map (kbd "S m") 'emms-score-more-tolerant)
+(define-key emms-playlist-mode-map (kbd "S t") 'emms-score-set-tolerance)
+(define-key emms-playlist-mode-map (kbd "S s") 'emms-score-show-playing)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; emms-kbd.el ends here

@@ -8,11 +8,11 @@
 ;;   :config
 ;;   (progn
 ;;    (require 'emms-setup)  ;;Emms 设置
-   (require 'emms-source-file) ;Emms 文件
-   (require 'emms-source-playlist) ;Emms 列表
-   (require 'emms-player-simple) ;Emms simple
-   (require 'emms-player-vlc)
-   (require 'emms-player-mplayer) ;Emms mplayer播放器
+   (require 'emms-source-file)     ;; Emms 文件
+   (require 'emms-source-playlist) ;; Emms 列表
+   (require 'emms-player-simple)   ;; Emms simple
+   (require 'emms-player-vlc)      ;; vlc player
+   (require 'emms-player-mplayer)  ;; Emms mplayer播放器
    (setq emms-player-list '(emms-player-mpg321
                             emms-player-ogg123
    			    emms-player-mplayer
@@ -31,7 +31,6 @@
    (require 'emms-history) ;自动保存和导入上次的播放列表
    (require 'emms-lyrics) ;Emms 歌词
    (require 'emms-browser) ;EMMS 浏览器
-   (require 'emms-cache) ;EMMS 缓存
    (require 'emms-volume-amixer) ;Emms 声音控制
    (require 'emms-streams) ;Emms 流媒体
    ;  (require 'emms-player-mpg321-remote) ;Emms 远程播放

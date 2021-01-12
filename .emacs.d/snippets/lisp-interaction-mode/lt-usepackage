@@ -5,6 +5,12 @@
 % --- %
 
 \usepackage[UTF8]{ctex}
+
+\usepackage{geometry}
+\setcounter{secnumdepth}{1}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{2ex}
+
 \usepackage[colorlinks,
 	linkcolor=black,
 	anchorcolor=blue,
@@ -13,10 +19,10 @@
       breaklink=true]{hyperref}
 	  
 %\author{daoyi}
-\author{\HL[green]{whshi@techyauld.com}}
+%\author{\HL[green]{whshi@techyauld.com}}
 
 %\date{\today}
-\date{\HL[red]{\today}}
+%\date{\HL[red]{\today}}
 
 \usepackage{tcolorbox}
 \newtcbox{\HL}[1][red]
@@ -28,6 +34,8 @@
 \usepackage{xcolor}
 \usepackage{framed}
 \colorlet{shadecolor}{blue!20}
+
+% ---%
 
 % \begin{shaded}
 % \lipsum[2-7]

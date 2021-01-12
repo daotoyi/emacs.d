@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: sh-header
-# key: ssh
+# key: shh
 # --
 ######################################################################### 
 # File Name: `(file-name-nondirectory buffer-file-name)`

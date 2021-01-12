@@ -1,9 +1,10 @@
-;;; init-emms.el --— Emms configuration
+;;; init-emms.el --— Emmsconfiguration
 ;;; Commentary: customize based on EMMS default setting.
+;;; Code:
 
 (add-to-list 'load-path (expand-file-name (concat EamcsConfDir ".emacs.d/emms")))
-(add-to-list 'exec-path "/D:/Program Files/MPlayer for Windows/")
-(add-to-list 'exec-path "/D:/Program Files/VideoLAN/VLC/")
+(add-to-list 'exec-path "d:/Program Files/MPlayer for Windows/")
+(add-to-list 'exec-path "d:/Program Files/VideoLAN/VLC/")
 
 (setq emmsdir (concat EamcsConfDir ".emacs.d/emms"))
 (make-directory emmsdir t)
@@ -11,94 +12,116 @@
 
 (use-package emms
   :ensure t 
-  :defer t ;; nil   
+  :defer t 
   :config
   (progn
    (require 'emms-setup)  ;; Emms set 
    (emms-standard)        ;; minimalistic, standard, all/devel 
-  )
-)
+  ))
 
-(with-eval-after-load 'emms
-;  (emms-standard)    ;;  minimalistic, standard, all/devel
-  (setq emms-repeat-playlist nil
-      emms-lyrics-dir "/e:/Recreation/Music/lyrics"
-      emms-lyrics-coding-system t
-      emms-info-asynchronously t  ;; nil
-      emms-show-format "♪ %s"
-      emms-playlist-buffer-name "*EMMS*"    ;; or *Music*
-      emms-source-file-default-directory "/e:/Recreation/Music"
-  )
-  
-  (if (executable-find "mplayer")    ;; smplayer replaced mplayer below.
-     (setq emms-player-list '(emms-player-mplayer)
-           emms-player-mplayer-command-name "mplayer"
-           emms-player-mplayer-parameters '("-slave"))
-	   (emms-default-players)
-  )
-;;  (if (executable-find "vlc")    
-;;     (setq emms-player-list '(emms-player-mplayer)
-;;           emms-player-mplayer-command-name "vlc"
-;;	   (emms-default-players)
-
-  (add-to-list 'emms-track-initialize-functions 'emms-info-initialize-track)
-  (add-to-list 'emms-info-functions 'kid-emms-info-simple)
-  (add-to-list 'emms-info-functions 'kid-emms-info-simple)
-
-(define-emms-simple-player mplayer '(file url) 
-     (regexp-opt '(".ogg" ".mp3" ".wav" ".mpg" ".mpeg" ".wmv" ".wma" 
-        ".mov" ".avi" ".divx" ".ogm" ".asf" ".mkv" "http://" "mms://" 
-        ".rm" ".rmvb" ".mp4" ".flac" ".vob" ".m4a" ".flv" ".ogv" ".pls")) 
-     "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen") 
-
-(setq emms-playlist-default-major-mode 'emms-playlist-mode)
-;(setq emms-track-description-function 'kid-emms-info-track-description)
-(when (fboundp 'emms-cache)
-  (emms-cache 1))
-
-;;; use faster finding facility if you have GNU find
-;(setq emms-source-file-directory-tree-function 
-;    emms-source-file-directory-tree-find)
-
-(add-hook 'emms-player-started-hook 'emms-show)
-
-;;; mode line format
-(setq emms-mode-line-format "[ %s "
-      emms-playing-time-display-format "%s ]")
-(setq global-mode-string
-      '("" emms-mode-line-string " " emms-playing-time-string))
-
-;;; Emms-lyrics set
-;(ad-activate 'emms-lyrics-find-lyric) ;download lyrics automaticlly
-(setq emms-lyrics-dir "/e:/Recreation/Music/lyrcis") 
-(setq emms-lyrics-display-format "%s") 
-(setq emms-lyrics-scroll-timer-interval 1.0) ;lysrics scrolldelay
-(setq emms-lyrics-display-on-minibuffer nil) 
-(setq emms-lyrics-display-on-modeline nil) 
-
-;;; Emms-browser
-(autoload 'emms-smart-browse "emms-browser.el" "Browse with EMMS" t)
-(global-set-key [(f7)] 'emms-smart-browse)
-
-(setq emms-browser-info-genre-format "%i● %n"
-      emms-browser-info-artist-format "%i● %n"
-      emms-browser-info-album-format "%i◎ %n"
-      emms-browser-info-title-format "%i♪ %n") ;; time display formate
-(setq emms-last-played-format-alist            ;; formate the time of played last 
-      '(((emms-last-played-seconds-today) . "%H:%M")  ;; today
-	(604800 . "W%w %H:%M")                        ;; this week
-	((emms-last-played-seconds-month) . "%d")     ;; this month
-	((emms-last-played-seconds-year) . "%m-%d")   ;; this year
-	(t . "")))
-
-)   ;; with-eval-after-load
-
-;;  (emms-player-set emms-player-mplayer 'regex "
-;;  		 .ogg|.mp3|.wav| .mpg | .mpeg | .wmv | .wma | .mov | .avi | .divx | .ogm | .asf | .mkv |http:// |mms:// | .rm | .rmvb | .mp4 | .flac | .vob | .m4a | .ape | .mpc")
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; emms package entrance.
 (require 'emms-packages)
 (require 'emms-kbd)
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(with-eval-after-load 'emms
+  ; (emms-standard)    ;;  minimalistic, standard, all/devel
+
+  ; (if (executable-find "d:/program files/videolan/vlc/vlc.exe")
+  ;   (setq emms-player-vlc-command-name "d:/program files/videolan/vlc/vlc.exe"))
+
+  (setq emms-player-list '(emms-player-mplayer)
+        emms-player-mplayer-command-name "d:/Program Files/MPlayer for Windows/mplayer.exe"
+        emms-player-mplayer-parameters '("-slave"))
+    
+  (emms-default-players)
+
+  (setq emms-repeat-playlist nil
+      emms-show-format "♪ %s"
+      emms-info-asynchronously nil
+      emms-playlist-buffer-name "*Emms*"
+      emms-lyrics-coding-system t
+      emms-lyrics-dir "e:/Recreation/Music/lyrics/"
+      emms-source-file-default-directory "e:/Recreation/Music/"
+  )
+
+  (add-hook 'emms-player-started-hook 'emms-show)
+  (add-to-list 'emms-track-initialize-functions 'emms-info-initialize-track)
+
+  ;;;; defun function
+  ;; Get info from the music filename.
+  (add-to-list 'emms-info-functions 'kid-emms-info-simple) 
+  ;; Customize Playlist format.
+  ;; (setq emms-track-description-function 'kid-emms-info-track-description)
+  
+  ;;; mode line format
+  (setq emms-mode-line-format " [ %s "
+        emms-playing-time-display-format "%s ]")
+  ;; (setq global-mode-string
+  ;;       '("" emms-mode-line-string " " emms-playing-time-string))
+  
+  ;; ;;; faster finding facility if you have GNU find
+  ;; it affect M-x emms-play-directory-tree, cannot encode playlist && plauy corredtly 
+  ;; (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
+  (setq emms-playlist-default-major-mode 'emms-playlist-mode)
+  
+  (when (fboundp 'emms-cache)
+    (emms-cache 1))
+  
+  (define-emms-simple-player mplayer '(file url) 
+       (regexp-opt '(".ogg" ".mp3" ".wav" ".mpg" ".mpeg" ".wmv" ".wma" 
+          ".mov" ".avi" ".divx" ".ogm" ".asf" ".mkv" "http://" "mms://" 
+          ".rm" ".rmvb" ".mp4" ".flac" ".vob" ".m4a" ".flv" ".ogv" ".pls")) 
+       "mplayer" "-slave" "-quiet" "-really-quiet" "-fullscreen") 
+  
+  ;;; Emms-lyrics set
+  ;(ad-activate 'emms-lyrics-find-lyric) ;download lyrics automaticlly
+  (setq emms-lyrics-dir "/e:/Recreation/Music/lyrcis") 
+  (setq emms-lyrics-display-format "%s") 
+  (setq emms-lyrics-scroll-timer-interval 1.0) ;lysrics scrolldelay
+  (setq emms-lyrics-display-on-minibuffer nil) 
+  (setq emms-lyrics-display-on-modeline nil) 
+  
+  ;;; Emms-browser
+  (autoload 'emms-smart-browse "emms-browser.el" "Browse with EMMS" t)
+  (global-set-key [(f7)] 'emms-smart-browse)
+  
+  (setq emms-browser-info-genre-format "%i● %n"
+        emms-browser-info-artist-format "%i● %n"
+        emms-browser-info-album-format "%i◎ %n"
+        emms-browser-info-title-format "%i♪ %n") ;; time display formate
+  (setq emms-last-played-format-alist            ;; formate the time of played last 
+        '(((emms-last-played-seconds-today) . "%H:%M")  ;; today
+  	(604800 . "W%w %H:%M")                        ;; this week
+  	((emms-last-played-seconds-month) . "%d")     ;; this month
+  	((emms-last-played-seconds-year) . "%m-%d")   ;; this year
+  	(t . "")))
+
+)  ;; end of with-eval-after-load
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; defun section ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun kid-emms-info-simple (track)
+  "Get info from the filename."
+  (when (eq 'file (emms-track-type track))
+    (let ((regexp "/\\([^/]+\\)/\\([^/]+\\)\\.[^.]+$")
+          (name (emms-track-name track)))
+      (if (string-match regexp name)
+          (progn
+            (emms-track-set track 'info-artist (match-string 1 name))
+            (emms-track-set track 'info-title (match-string 2 name)))
+          (emms-track-set track
+                          'info-title
+                          (file-name-nondirectory name))))))
+
+(defun kid-emms-info-track-description (track)
+ "Return a description of the current track."
+  (let ((artist (emms-track-get track 'info-artist))
+        (title (emms-track-get track 'info-title)))
+    (format "%-10s +| %s"
+	    (or artist "")
+	    title)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-emms.el ends here
 (provide 'init-emms)
