@@ -11,6 +11,7 @@
 .emacs.d/projectile-bookmarks.eld
 .emacs.d/recentf*
 .emacs.d/smex-items
+.emacs.d/url/
 .ssh/
 mplayer/
 tmp/
