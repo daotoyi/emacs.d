@@ -32,7 +32,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Setting Font ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (set-face-attribute
-  'default nil :font "Monaco 8")
+  'default nil :font "Monaco 9")
 ;; Chinese Font
 (dolist (charset '(kana han symbol cjk-misc bopomofo))
   (set-fontset-font
@@ -56,10 +56,6 @@
   ;;;; above on linux cannot pass well.
 
   ;;  (set-face-attribute 'default nil :font "微软雅黑 11")
-  (setq display-line-numbers-type 'relative)	;; or visual
-  (global-display-line-numbers-mode t)		;; (global-linum-mode t)
-  (defalias 'yes-or-no-p 'y-or-n-p)		;; yes = y; no = n-p
-  (setq linum-format "%4d")
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -3,6 +3,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ ;; '(bongo-custom-backend-matchers (quote ((mplayer (local-file)))))
+ '(bongo-enabled-backends (quote (mplayer)))
  '(custom-safe-themes
    (quote
     ("8b58ef2d23b6d164988a607ee153fd2fa35ee33efc394281b1028c2797ddeebb" default)))

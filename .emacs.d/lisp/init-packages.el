@@ -1,46 +1,48 @@
-;;; init-packages.el --- load the plugin
+;;; package.el --- plugin packages
 ;;; Commentary:
+;;; Code:
 
-;;; --- Kind of Install Method---
-; (require-package 'use-package)		;; define in elpa.el
-; (require 'use-package-autoloads)		;; default
-; (package-install 'use-package)		;; default
+;; cl - Common Lisp Extension
+;; (require 'cl)	     ;; deprecated
 
-;;; cl - Common Lisp Extension
-;  (require 'cl)		;; deprecated
-
-;;;; Load use-package manager
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-(require 'use-package)
-(eval-and-compile                       ;; avoid warning when compile
-    (setq use-package-always-ensure t)
-    (setq use-package-always-defer t)
-    (setq use-package-always-demand nil)
-    (setq use-package-expand-minimally t)
-    (setq use-package-verbose t)
-)
-	
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(require 'unicad)            ;;; recognize encoding automaticly
-(require 'lazy-set-key)      ;;; unavalible from source install
+;; .emacs.d/lisp/extra-el
+(require 'unicad)            ;; recognize encoding automaticly
+(require 'lazy-set-key)      ;; unavalible from source install
 (require 'find-by-pinyin-dired)
 
 (use-package magit)
-(use-package unicad)         ;;; recognize encoding automaticly
+(use-package unicad)         ;; recognize encoding automaticly
 (use-package markdown-mode)
 (use-package smartparens)
 
-(use-package fcitx)          ;;; fcixt --- switch ficxt when in or out evi-mode 
-(use-package sis             ;;; smart-input-source
+(use-package exec-path-from-shell
   :config
-  (sis-global-cursor-color-mode t)
-  (sis-ism-lazyman-config nil "rime" 'native)
-  (sis-global-respect-mode t)
-  (sis-global-context-mode t)
-  (sis-global-inline-mode t))
+  (exec-path-from-shell-initialize))
+
+(use-package fcitx           ;; fcixt --- switch ficxt when in or out evi-mode
+  :defer nil
+  :after exec-path-from-shell
+  :config
+  (fcitx-prefix-keys-setup)    ;;  (fcitx-prefix-keys-add "C-c") and "C-x"
+  (fcitx-prefix-keys-turn-on)
+  (fcitx-evil-turn-on)
+  
+  (fcitx-M-x-turn-on)
+  (fcitx-shell-command-turn-on)
+
+  (fcitx-eval-expression-turn-on)
+  (fcitx-isearch-turn-on)
+  (fcitx-read-funcs-turn-on)
+  ;; (fcitx-aggressive-setup)
+  ;; (fcitx-prefix-keys-turn-off)
+  )
+;; (use-package sis   ;; smart-input-source（ensure each language only one input method)
+;;   :config
+;;   (sis-global-cursor-color-mode t)
+;;   (sis-ism-lazyman-config nil "rime" 'native)
+;;   (sis-global-respect-mode t)
+;;   (sis-global-context-mode t)
+;;   (sis-global-inline-mode t))
 
 (use-package smooth-scrolling
   :defer nil
@@ -49,15 +51,10 @@
 	scroll-conservatively 10000)
   )
 
-(use-package exec-path-from-shell
-  :config
-  (exec-path-from-shell-initialize))
-
 (use-package popwin
   :config
   (popwin-mode 1))
 
-;;; MapKey
 (use-package which-key
     :defer 1 
     :config (which-key-mode))
@@ -101,7 +98,7 @@
   (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))    ;; define leader key
 
 (use-package helm-projectile
-  :defer 2 
+  :defer nil
   :if (functionp 'helm)          ;; if use helm, show projectile option with helm
   :config
   (helm-projectile-on))
@@ -252,7 +249,7 @@
 
 (use-package popup) 
 (use-package auto-complete
-  :defer
+  :defer 2
   :config
   (ac-config-default)
   (global-auto-complete-mode t)
@@ -311,54 +308,61 @@
         lsp-ui-doc-enable t
         lsp-lens-enable t))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; bongo ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'general)
+(add-to-list 'exec-path "d:/Program Files/MPlayer for Windows/")
+(use-package bongo
+  :commands bongo-playlist
+  :general
+  (:states 'normal
+	   :keymaps 'bongo-playlist-mode-map
+	   "<return>" 'bongo-dwim
+	   "i" 'bongo-insert-file
+	   "p" 'bongo-play-previous
+	   "n" 'bongo-play-next
+	   "w" 'bongo-pause/resume
+	   "d" 'bongo-dired-line
+	   "a" 'bongo-append-enqueue
+	   "s" 'bongo-seek
+	   "r" 'bongo-rename-line
+	   "v" 'volume)
+  :custom
+  (bongo-enabled-backends '(mplayer))
+  (bongo-default-directory "e:/Recreation/Music/")
+  (bongo-insert-album-covers t)
+  (bongo-album-cover-size 100)
+  (bongo-mode-line-indicator-mode nil)
+  )
+;; (setq bongo-custom-backend-matchers
+;;            '((vlc local-file "mp3")
+;;              (speexdec local-file "speex")
+;;              (ignore local-file "wav")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; (use-package bongo
-;;   :commands bongo-playlist
-;;   :general
-;;   (:states 'normal
-;; 	   :keymaps 'bongo-playlist-mode-map
-;; 	   "<return>" 'bongo-dwim
-;; 	   "i" 'bongo-insert-file
-;; 	   "p" 'bongo-play-previous
-;; 	   "n" 'bongo-play-next
-;; 	   "w" 'bongo-pause/resume
-;; 	   "d" 'bongo-dired-line
-;; 	   "e" 'bongo-append-enqueue
-;; 	   "s" 'bongo-seek
-;; 	   "r" 'bongo-rename-line
-;; 	   "v" 'volume)
-;;   :custom
-;;   (bongo-enabled-backends '(mplayer))
-;;   (bongo-default-directory "~/Music/")
-;;   (bongo-insert-album-covers t)
-;;   (bongo-album-cover-size 100)
-;;   (bongo-mode-line-indicator-mode nil))
+(use-package pdf-tools
+  :pin manual  ;; manual update
+  :config
+  (pdf-tools-install)
+  (setenv "PATH" (concat "d:\\msys64\\mingw64\\bin;" (getenv "PATH")))
+  (setq-default pdf-view-display-size 'fit-width)
+  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; make it default
+  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+     TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+     TeX-source-correlate-start-server t)
+  (add-hook 'TeX-after-compilation-finished-functions
+	    #'TeX-revert-document-buffer)
 
-;; (use-package pdf-tools
-;;   :pin manual  ;; manual update
-;;   :config
-;;   (pdf-tools-install)
-;;   (setq-default pdf-view-display-size 'fit-width)
-;;   (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-
-;;   ;; make it default
-;;   (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-;;      TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-;;      TeX-source-correlate-start-server t)
-;;   (add-hook 'TeX-after-compilation-finished-functions
-;; 	    #'TeX-revert-document-buffer)
-
-;;   ;; play well with Emacs linum-mode. 
-;;   (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
+  ;; play well with Emacs linum-mode. 
+  (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
   
-;;   :custom
-;;   ;; automatically annotate highlights
-;;   (pdf-annot-activate-created-annotations t "automatically annotate highlights")
-;;     ;; or (setq pdf-annot-activate-created-annotations t)
-;;    )
+  :custom
+  ;; automatically annotate highlights
+  (pdf-annot-activate-created-annotations t "automatically annotate highlights")
+    ;; or (setq pdf-annot-activate-created-annotations t)
+   )
 
 ;;; vterm    ;;"VTerm needs module support. compile Emacs with the --with-modules option!
 ;; (use-package vterm)

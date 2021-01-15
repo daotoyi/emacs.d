@@ -1,4 +1,6 @@
 ;;; --- init-elpa.el ---- elpa Manager
+;;; Commentary:
+;;; Code:
 
 (require 'package)
 ;;;; Force initialize ELPA.Default, Emacs initialize the ELPA after load init.el,
@@ -12,10 +14,10 @@
     (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
 			 ("melpa" . "http://elpa.emacs-china.org/melpa/")		;;emacs-china mirror melpa
 			 ("elpa" . "http://tromey.com/elpa/")
+			 ("org" . "http://mirrors.cloud.tencent.com/elpa/org/")
 			 ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
 			 ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
 			 ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") 
-			 ("org" . "http://mirrors.cloud.tencent.com/elpa/org/")
 			 )))
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 
@@ -32,6 +34,25 @@
         (package-refresh-contents)
         (require-package package min-version t)))))
 
-;; -------------------------
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;--- Kind of Install Method ---;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; (require-package 'use-package)		;; customize function
+; (require 'use-package-autoloads)		;; default
+; (package-install 'use-package)		;; default
+
+;;;; Load use-package manager
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+(eval-and-compile                       ;; avoid warning when compile
+    (setq use-package-always-ensure t)
+    (setq use-package-always-defer t)
+    (setq use-package-always-demand nil)
+    (setq use-package-expand-minimally t)
+    (setq use-package-verbose t)
+)
+	
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; init-elpa.el ends here.
 (provide 'init-elpa)

@@ -4,7 +4,6 @@
 
 (add-to-list 'load-path (expand-file-name (concat EamcsConfDir ".emacs.d/emms")))
 (add-to-list 'exec-path "d:/Program Files/MPlayer for Windows/")
-(add-to-list 'exec-path "d:/Program Files/VideoLAN/VLC/")
 
 (setq emmsdir (concat EamcsConfDir ".emacs.d/emms"))
 (make-directory emmsdir t)
@@ -61,7 +60,7 @@
   ;;       '("" emms-mode-line-string " " emms-playing-time-string))
   
   ;; ;;; faster finding facility if you have GNU find
-  ;; it affect M-x emms-play-directory-tree, cannot encode playlist && plauy corredtly 
+  ;; it affect M-x emms-play-directory-tree, cannot encode playlist && play corredtly 
   ;; (setq emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
   (setq emms-playlist-default-major-mode 'emms-playlist-mode)
   

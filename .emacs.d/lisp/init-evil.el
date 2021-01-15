@@ -18,8 +18,9 @@
 		"cc" 'evilnc-copy-and-comment-lines
          	"cp" 'evilnc-comment-or-uncomment-paragraphs
 		
-		"ff" 'find-file
-		"bb" 'switch-to-buffer
+		;; "ff" 'find-file
+		"f" 'find-file
+		"b" 'switch-to-buffer
 
 		"0"  'select-window-0
 		"1"  'select-window-1

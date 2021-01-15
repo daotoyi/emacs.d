@@ -156,7 +156,7 @@
 (global-set-key (kbd "C-c e d") 'emms-play-dired)
 (global-set-key (kbd "C-c e v") 'emms-start)
 (global-set-key (kbd "C-c e x") 'emms-stop)
-(global-set-key (kbd "C-c e SPC") 'emms-pause)
+(global-set-key (kbd "C-c e w") 'emms-pause)
 (global-set-key (kbd "C-c e n") 'emms-next)
 (global-set-key (kbd "C-c e p") 'emms-previous)
 (global-set-key (kbd "C-c e o") 'emms-show)

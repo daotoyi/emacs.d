@@ -23,6 +23,7 @@
 (require 'init-packages)
 (require 'init-startup)
 ;; (require 'test-startup)
+(require 'init-config)
 (require 'init-ui)
 (require 'init-evil)
 (require 'init-kbd)
@@ -32,9 +33,10 @@
 (require 'init-web)
 (require 'init-emms)
 ;; (require 'test-emms)
+;; (require 'test-bongo)
 ;; (require 'init-python)
 
-;;; (require 'custom)
+(require 'custom)
 (setq custom-file "~/.emacs.d/lisp/custom.el")
 (unless (file-exists-p custom-file)     ;; confirm custom.el if exist
   (write-region "" nil custom-file))    ;; write blank content.

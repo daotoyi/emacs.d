@@ -47,19 +47,55 @@
 	       '(("[pP][lL][iI][nN][kK]" gbk-dos . gbk-dos)
 		 ("[cC][mM][dD][pP][rR][oO][xX][yY]" gbk-dos . gbk-dos))))
 
-(when (string-equal current-language-environment "Chinese-GBK")
-  (setq default-process-coding-system '(utf-8-unix . chinese-gbk-dos)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; close Emacs ring-bel
- (setq ring-bell-function 'ignore)				
+(setq-default frame-title-format '("%f"))
+(setq frame-title-format "Emacs@%b")
+(display-time-mode 1)
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
+(setq display-time-interval 10)
+(setq display-time-use-mail-icon t)
+(setq time-stamp-format "%:u %02m/%02d/%04y %02H02M02S")  ;; optional.
 
-;; Settings for backup files
-(setq make-backup-files nil
-      auto-save-default nil)			;;close auto-save && auto-backup files 
 
+(setq default-directory "e:/Refine/")
+(setq make-backup-files nil             ;; Settings for backup files
+      auto-save-default nil)		;; auto-save && auto-backup files 
+(setq-default make-backup-files nil)    ;; tmp file
 ;; all backups goto ~/.backups instead in the current directory
 (setq backup-directory-alist (quote (("." . "e:/TMP/TmpFiles"))))
+
+(setq ring-bell-function 'ignore)	;; close Emacs ring-bel
+(global-auto-revert-mode 1)		;; autorelead files modified by other APP
+
+(setq default-major-mode 'text-mode)    ;; text-mode when open emacs.
+(setq track-eol t)                      ;; hold cursor at end of lines when move cursor.
+(setq tab-width 4)			;; tab space
+(setq linum-format "%4d")
+(setq require-final-newline t)
+(setq x-select-enable-clipboard t)      ;; outside progress - paste for gui-emacs
+(setq mouse-yank-at-point t)            ;; mouse middle key yank
+(setq show-paren-style 'parenthesis)
+(setq enable-recursive-minibuffers t)
+(setq auto-image-file-mode t)
+(global-hl-line-mode 1)			;; hlight current line
+(delete-selection-mode 1)		;; the input replace the selected section
+(show-paren-mode t)
+(toggle-truncate-lines t)		;; auto-turncate
+
+(transient-mark-mode t)                 ;; highlight the section selected
+(global-font-lock-mode t)
+(mouse-avoidance-mode 'animate)         ;; mouse escape cursor
+(auto-compression-mode 1)
+
+(setq user-full-name "Daoyi")
+(setq user-mail-address "wenhuas.shi@gmail.com")
+
+;;; -------------------------------------------------------------------------------------
+
+(setq display-line-numbers-type 'relative)	;; or visual
+(global-display-line-numbers-mode t)		;; (global-linum-mode t)
+(defalias 'yes-or-no-p 'y-or-n-p)		;; yes = y; no = n-p
 
 ;; go back windows frame with "C-c <LEFT>"
  (when (fboundp 'winner-mode) 
@@ -80,49 +116,23 @@
   (goto-char (point-min))
   (while (search-forward "\r" nil t) (replace-match "")))
 
-;; hold cursor at end of lines when move cursor.
-(setq track-eol t)
-
 ;; Adjust garbage collection thresholds during startup
 (setq gc-cons-threshold most-positive-fixnum)
 
-(setq default-directory "e:/Refine/")
+;; mouse scroll too fast, let it 3 lines.
+(defun up-slightly ()
+  (interactive)
+  (scroll-up 3))
+(defun down-slightly ()
+  (interactive)
+  (scroll-down 3))
+(global-set-key [mouse-4] 'down-slightly)
+(global-set-key [mouse-5] 'up-slightly)
 
-;; Other settings
-(setq tab-width 4)			;; tab space
-(toggle-truncate-lines t)		;; auto-turncate
-(global-hl-line-mode 1)			;; hlight current line
-(delete-selection-mode 1)		;; the input replace the selected section
-(global-auto-revert-mode 1)		;; autorelead files modified by other APP
-(setq x-select-enable-clipboard t)      ;; outside progress - paste for gui-emacs
-(setq mouse-yank-at-point t)            ;; mouse middle key yank
-
-(setq default-major-mode 'text-mode)    ;; text-mode when open emacs.
-
-(setq-default frame-title-format '("%f"))
-(setq frame-title-format "Emacs@%b")
-(display-time-mode 1)
-(setq display-time-24hr-format t)
-(setq display-time-day-and-date t)
-(setq display-time-interval 10)
-(setq display-time-use-mail-icon t)
-
-(global-font-lock-mode t)
-(transient-mark-mode t)
-(mouse-avoidance-mode 'animate)
-(show-paren-mode t)
-
-;; mail
-(setq send-mail-function (quote smtpmail-send-it))
-(setq smtpmail-smtp-server "smtp.qq.com")
-(setq smtpmail-smtp-service 25)
-(setq user-full-name "daoyi") 
-(setq user-mail-address "1392429831@qq.com")
-
-;;; ----------------------------------------------------------------------------
+;;; -------------------------------------------------------------------------------------
 (setq inhibit-startup-screen t)					;; close startup windows
-(setq initial-scratch-message "\n;; Configuration by Daoyi <gitee.com:daotoyi/emacsemacs.d>.\n;; Enjoy!\n\n")
-;;; ----------------------------------------------------------------------------
+(setq initial-scratch-message
+      "\n;; Configuration by Daoyi <gitee.com:daotoyi/emacsemacs.d>. \n;; Enjoy!\n\n")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (provide 'init-startup)
