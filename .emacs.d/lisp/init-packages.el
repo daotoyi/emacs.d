@@ -103,6 +103,17 @@
   :config
   (helm-projectile-on))
 
+;; this function maybe replaced by  counsel 
+ (use-package recentf
+     :defer 2 
+     :config
+     (recentf-mode 1 )
+     (setq recentf-max-saved-items 200
+ 	recentf-max-menu-items 15)				;; visit NO. files 10
+     (global-set-key (kbd "<F10>") 'recentf-open-files)
+     (global-set-key (kbd "C-x C-r") 'recentf-open-files)	;; replaced by  counsel 
+     (setq kill-ring-max 200))			;; record of files deleted 200
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Text Edit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package drag-stuff
@@ -154,18 +165,6 @@
 ;;   (global-set-key(kbd "M-X") 'smex-major-mode-commands)
 ;;   (global-set-key(kbd "C-c C-c M-x") 'execute-extended-command)   ;; go back old M-x.
 ;;   )
-
-
-;; this function maybe replaced by  counsel 
- (use-package recentf
-     :defer 2 
-     :config
-     (recentf-mode 1 )
-     (setq recentf-max-saved-items 200
- 	recentf-max-menu-items 15)				;; visit NO. files 10
-     (global-set-key (kbd "<F10>") 'recentf-open-files)
-     (global-set-key (kbd "C-x C-r") 'recentf-open-files)	;; replaced by  counsel 
-     (setq kill-ring-max 200))			;; record of files deleted 200
 
 (use-package ace-jump-mode
   :defer 2 
@@ -247,15 +246,6 @@
 
 (add-hook 'c-mode-common-hook 'my-c-mode-ac-complete-hook)
 
-(use-package popup) 
-(use-package auto-complete
-  :defer 2
-  :config
-  (ac-config-default)
-  (global-auto-complete-mode t)
-  (setq tab-always-indent 'complete)  ;; tab, first indent, second complete.
-  )
-
 (use-package company
   :defer 2 
   :config
@@ -277,36 +267,14 @@
   (push '(company-semantic :with company-yasnippet) company-backends)
   :hook ((after-init . global-company-mode)))        ;; =  (add-hook 'after-init-hook #'global-company-mode) 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package lsp-mode
-  :commands (lsp)   ;; defer load, when lsp called
-  :hook (((ruby-mode
-           php-mode
-           python-mode
-           typescript-mode
-           ) . lsp))
-  :init 
-  (setq lsp-auto-configure t    ;; try automaticly config itself
-        lsp-auto-guess-root t   ;; try automaticly guess root/dir
-        lsp-idle-delay 0.500    ;; how much time, after refresh info form server
-        lsp-session-file "~/.emacs.d/.cache/lsp-sessions") ;; cache location
+(use-package popup) 
+(use-package auto-complete
+  :defer 2
+  :config
+  (ac-config-default)
+  (global-auto-complete-mode t)
+  (setq tab-always-indent 'complete)  ;; tab, first indent, second complete.
   )
-
-(use-package lsp-ui   ;; show content
-  :after (lsp-mode)
-  :commands (lsp-ui-mode)
-  :bind
-  (:map lsp-ui-mode-map
-        ([remap xref-find-references] . lsp-ui-peek-find-references)    ;; query symbol reference.(use  LSP ,generally M-. )
-        ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)  ;; query symbol define (use  lsp ,generally m-? )
-        ("c-c u" . lsp-ui-imenu))
-  :hook (lsp-mode . lsp-ui-mode)   ;; auto activate when lsp activated
-  :init
-  ;; https://github.com/emacs-lsp/lsp-mode/blob/master/docs/tutorials/how-to-turn-off.md
-  (setq lsp-enable-symbol-highlighting t
-        lsp-ui-doc-enable t
-        lsp-lens-enable t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; bongo ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'general)
