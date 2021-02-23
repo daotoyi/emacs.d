@@ -1,5 +1,6 @@
 ;;; init-roll.el --- window or buffer rotate
 ;;; Commentary:
+;;; Code
 
 ;;; roll windows
 (defun roll-window-3 () 
@@ -40,7 +41,6 @@
 
 (global-set-key (kbd "C-x 4 w") (quote roll-window-3))
 
-
 ;;; roll buffer
 (defun roll-buffer-3-auti-clockwise (&optional arg) 
     "Rolling 3 window buffers (anti-)clockwise"
@@ -54,35 +54,32 @@
             (let ((1stBuf (window-buffer 1stWin)) 
                   (2ndBuf (window-buffer 2ndWin)) 
                   (3rdBuf (window-buffer 3rdWin))) 
-              (if arg (progn                               ; anti-clockwise
+              (if arg (progn                                ; anti-clockwise
                         (set-window-buffer 1stWin 3rdBuf) 
                         (set-window-buffer 2ndWin 1stBuf) 
                         (set-window-buffer 3rdWin 2ndBuf)) 
-                (progn                                     ; clockwise
+                (progn                                      ; clockwise
                   (set-window-buffer 1stWin 2ndBuf) 
                   (set-window-buffer 2ndWin 3rdBuf) 
                   (set-window-buffer 3rdWin 1stBuf)) 
-                )))))) 
+                ))))))
 
-(global-set-key (kbd "C-x 4 b")  (quote roll-buffer-3-anti-clockwise)) 
+(global-set-key (kbd "C-x 4 b")  (quote roll-buffer-3-auti-clockwise))
 
 
-;;; split window 4
-(defun split-window-4() 
+ (defun split-window-4() 
  "Splite window into 4 sub-window"
  (interactive) 
  (if (= 1 (length (window-list))) 
      (progn (split-window-vertically) 
-	    (split-window-horizontally 
+	    (split-window-horizontally) 
 	    (other-window 2) 
 	    (split-window-horizontally) 
 	    ) 
    ) 
  ) 
- )
 
 (global-set-key (kbd "C-x 4 4") (quote split-window-4))
-	
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (provide 'init-roll)
-;;; init-rotate.el ends here

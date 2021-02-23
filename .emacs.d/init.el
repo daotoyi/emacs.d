@@ -32,9 +32,11 @@
 (require 'init-web)
 (require 'init-emms)
 (require 'init-python)
+(require 'init-translate)
 ;; (require 'test-startup)
 ;; (require 'test-emms)
 ;; (require 'test-bongo)
+;; (require 'test-roll)
 
 (require 'custom)
 (setq custom-file "~/.emacs.d/lisp/custom.el")

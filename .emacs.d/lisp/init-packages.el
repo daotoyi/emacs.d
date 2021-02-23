@@ -11,6 +11,7 @@
 (require 'find-by-pinyin-dired)
 
 (use-package magit)
+(use-package htmlize)
 (use-package unicad)         ;; recognize encoding automaticly
 (use-package markdown-mode)
 (use-package smartparens)
@@ -131,7 +132,7 @@
 (use-package ivy
   :defer 1
   :demand
-  ;; :hook (after-init . ivy-mode)
+  :hook (after-init . ivy-mode)  ;; set, it show list file in buffer.
   :config
   ;; (ivy-mode 1)    ;; if set it, emms-play-directory dir will go back upper.
   (setq ivy-use-virtual-buffers t

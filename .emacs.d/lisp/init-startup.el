@@ -26,7 +26,8 @@
 (set-clipboard-coding-system 'utf-8-unix)
 
 ;;; default when write && save
-(setq default-buffer-file-coding-system 'utf-8-unix)  ;; (set-default buffer-file-coding-system 'utf-8)
+;; (setq default-buffer-file-coding-system 'utf-8-unix)  ;; (set-default buffer-file-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
 
 ;; file path(Show Chinese)
 (setq-default pathname-coding-system 'utf-8)

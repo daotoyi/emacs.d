@@ -20,13 +20,19 @@
 
 ;; (global-set-key [(f7)] 'emms-smart-browse)  ;; set in init-emms.el
 ;; <f10> set for rename buffer.
+;; <f12> set for org-agenda.
 
 ;; (global-set-key (kbd "C-c p s") 'helm-do-ag-project-root) 		;; ag search
 
 ;; adjust text-scale
 (global-set-key (kbd "C-+") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-=") 'text-scale-decrease)
 (global-set-key (kbd "C-0") 'text-scale-adjust)
+
+;; mutil-media
+(global-set-key (kbd "C-c m e") 'emms-play-directory-tree)
+(global-set-key (kbd "C-c m b") 'bongo-playlist)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defconst my-projects-path "e:\\Refine\\Org" "My projects dir") 
