@@ -9,12 +9,18 @@
 (require 'unicad)            ;; recognize encoding automaticly
 (require 'lazy-set-key)      ;; unavalible from source install
 (require 'find-by-pinyin-dired)
+(require 'ox-jekyll-md)      ;; org export md. ;;(eval-after-load "org" '(require 'ox-md nil t))
 
 (use-package magit)
 (use-package htmlize)
 (use-package unicad)         ;; recognize encoding automaticly
-(use-package markdown-mode)
 (use-package smartparens)
+(use-package markdown-mode)
+(use-package markdown-toc
+  :after(markdown-mode)
+  :bind(("C-c C-m g" . markdown-toc-generate-toc)
+	("C-c C-m r" . markdown-toc-refresh-toc)
+	("C-c C-m d" . markdown-toc-delete-toc)))
 
 (use-package exec-path-from-shell
   :config
@@ -90,13 +96,13 @@
   :hook (after-init . global-flycheck-mode))		        ;; Global
   ;; :hook (prog-mode . flycheck-mode))				;; Progress mode
 
-;; (ido-mode t)   ;; projectile need it
-(use-package projectile
-  :defer 1 
-  :config
-  (setq projectile-cache-file (expand-file-name ".cache/projectile.cache" user-emacs-directory))
-  (projectile-mode 1)
-  (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))    ;; define leader key
+;;;; (ido-mode t)   ;; projectile need it
+;; (use-package projectile
+;;   :defer 1 
+;;   :config
+;;   (setq projectile-cache-file (expand-file-name ".cache/projectile.cache" user-emacs-directory))
+;;   (projectile-mode 1)
+;;   (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))    ;; define leader key
 
 (use-package helm-projectile
   :defer nil

@@ -31,16 +31,22 @@
 (autoload 'turn-on-iimage-mode "iimage" "Turn on Inline image minor mode." t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Setting Font ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(set-face-attribute
-  'default nil :font "Monaco 8")
+(set-face-attribute 'default nil :font "Monaco 8")
 ;; Chinese Font
 (dolist (charset '(kana han symbol cjk-misc bopomofo))
-  (set-fontset-font
-    (frame-parameter nil 'font)
-    charset
-    (font-spec :family "微软雅黑" :size 20)))
+  (set-fontset-font (frame-parameter nil 'font) charset
+		    (font-spec :family "微软雅黑" :size 20)))
 ;;(font-spec :family "WenQuanYi Micro Hei Mono" :size 16)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Setting monospaced Font ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
+;;; Maybe godd, but not try.
+;; (defun set-font (english chinese english-size chinese-size)
+;;    (set-face-attribute 'default nil :font
+;;                        (format   "%s:pixelsize=%d"  english english-size))
+;;    (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;      (set-fontset-font (frame-parameter nil 'font) charset
+;;                        (font-spec :family chinese :size chinese-size))))
+;; (set-font   "Dejavu Sans Mono" "WenQuanYi Zen Hei Mono" 14 14)
 			 
 ;; Resolve Emacs not fluency on windows 
 (use-package emacs

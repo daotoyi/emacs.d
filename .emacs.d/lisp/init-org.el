@@ -15,14 +15,27 @@
   (require 'ox-latex-chinese)
   (setq org-startup-indented t
 	org-src-fontify-natively t		;; highlight
+	refine-directory "E:/Refine/"
 	org-directory "E:/Refine/Org/"))
 
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(add-to-list 'auto-mode-alist '("\\.sh\\'" . org-mode))
+;; (setq auto-mode-alist
+;;       (append
+;;        '(("\\.js\\'" . js2-mode))
+;;        '(("\\.sh\\'" . org-mode))
+;;        '(("\\.el\\'" . emacs-lisp-mode))
+;;        auto-mode-list))
+
 (add-hook 'org-mode-hook 'turn-on-font-lock)  ;;; not needed when global-font-lock-mode is on
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))   ;; auto word wrap
 ;; (add-hook 'org-mode-hook '(lambda () (setq fill-column 80)))
 ;; (add-hook 'org-mode-hook 'turn-on-auto-fill)
 
+(global-set-key "\C-c L" 'org-insert-link-global)
+(global-set-key "\C-c o" 'org-open-at-point-global)
+
+;;; org-language ----------------------------------------------------------------------------
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((R . t)
@@ -35,45 +48,54 @@
    (latex . t)
    (js . t)
    ))
-;;; org-todo` ----------------------------------------------------------------------------
+;;; org-todo ----------------------------------------------------------------------------
 
 ;; (setq org-enforce-todo-dependencies t)    ;; main task cannot set done if subtask not finished.
 
-(setq	org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "WAITING(w)" "|" "CANCELED(c@/!)" "DONE(d!)"))
+(setq	org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "WAIT(w)" "|" "CANCEL(c@/!)" "DONE(d!)"))
 	org-todo-keyword-faces '(("NEXT"     . "orange")
-	                         ("WAITING"  . "purple")
+	                         ("WAIT"  . "purple")
 	                         ("DONE"     . "green" )
-	                         ("CANCELED" . (:foreground "cyan" :weight bold))))
+	                         ("CANCEL" . (:foreground "cyan" :weight bold))))
 
 ;;; org-tags ----------------------------------------------------------------------------
 (setq org-tag-alist '((:startgroup . nil)
 		      ("Inbox" . ?i) ("Context" . ?c) ("Waiting" . ?w) ("Project" . ?p) ("Someday" . ?s) ("Reference" . ?r) ("Transh" . ?t)
-		      (:endgroup . nil)
-                      ("Work" . ?W)   ("Hobby" . ?H)   ("Refine" . ?R)
-		      (:newline . nil)
-		      ("ZhouYi" . ?Y) ("ZhongYi" . ?Z) ("Code" . ?C)
+		      (:endgroup . nil)  
 		      (:startgroup . nil)
 		      ("@Product" . ?P)
 		      (:grouptags . nil)
 		      ("P@tpe4k" . ?4) ("P@tpe5k" . ?5) ("P@tpe6k" . ?6) ("P@tre" . ?7) ("P@tsw" . ?8) ("P@other" . ?9)
 		      (:endgroup . nil)
+                      ("Work" . ?W)   ("Hobby" . ?H)   ("Refine" . ?R) ("Invest" . ?I) ("Output" . ?O)
+		      (:newline . nil)
+		      ("ZhouYi" . ?Y) ("ZhongYi" . ?Z) ("Code" . ?C)
+		      (:newline . nil)
+		      ("1Quadrant" . ?1) ("2Quadrant" . ?2) ("3Quadrant" . ?3)
 ))
 
 (setq org-tags-exclude-from-inheritance '("Project"))
 (setq org-tags-match-list-sublevels nil)
 
 ;;; org-capture --------------------------------------------------------------------------
-(setq org-default-notes-file (concat org-directory "GTD/inbox.org"))
+(setq org-default-notes-file (concat refine-directory "GTD/inbox.org"))
 (setq org-capture-templates
       '(
-        ("d" "ToDo"      entry (file+headline org-agenda-file-task "Work&Goal")  "* TODO [#A] %? :Inbox:\n CREATED: %T\n %i\n" :empty-lines 1)
-        ("l" "ToLearn"   entry (file+headline org-agenda-file-task "Learning")   "* TODO [#B] %?\n CREATED: %T\n %i\n"         :empty-lines 1)
-        ("h" "ToHobby"   entry (file+headline org-agenda-file-task "Hobbies")    "* TODO [#C] %?\n CREATED: %T\n %i\n"         :empty-lines 1)
-        ("o" "ToOther"   entry (file+headline org-agenda-file-task "Others")     "* TODO [#D] %?\n CREATED: %T\n %i\n"         :empty-lines 1)
-        ("n" "ToNotes"   entry (file+headline org-agenda-file-note "QuickNotes") "* TODO [#D] %t %? :Reference:\n %i\n"        :empty-lines 1)
-        ("i" "TOIdeas"   entry (file+headline org-agenda-file-note "QuickIdeas") "* TODO [#D] %t %? :Reference:\n %i\n"        :empty-lines 1)
-        ("p" "ToProject" entry (file+headline org-agenda-file-project "Proj@work")  "* TODO [#A] [/] %?\n CREATED: %T\n %i\n"  :empty-lines 1)
-        ("P" "ToPROJECT" entry (file+headline org-agenda-file-project "Proj@other") "* TODO [#A] [/] %?\n CREATED: %T\n %i\n"  :empty-lines 1)
+        ("f" "Task@quadrant1"  entry (file+headline org-agenda-file-task "Task&quadrant1")  "* TODO [#A] %? :1Quadrant:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("s" "Task@quadrant2"  entry (file+headline org-agenda-file-task "Task&quadrant2")  "* TODO [#B] %? :2Quadrant:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("t" "Task@quadrant3"  entry (file+headline org-agenda-file-task "Task&quadrant3")  "* TODO [#C] %? :3Quadrant:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("w" "Task@work&Goal"  entry (file+headline org-agenda-file-task "Task@work&goal")  "* TODO [#C] %? :Inbox:    \n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("l" "Task@learn" entry (file+headline org-agenda-file-task "Learning")   "* TODO [#D] %? :Inbox:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("h" "Task@hobby" entry (file+headline org-agenda-file-task "Hobbies")    "* TODO [#D] %? :Inbox:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("o" "Task@other" entry (file+headline org-agenda-file-task "Others")     "* TODO [#E] %? :Inbox:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ;; ("o" "Other"      entry (file+headline org-agenda-file-task "Others")     "* TODO [#D] %?\n CREATED: %T\n %i\n"         :empty-lines 1)
+        ("n" "Notes"      entry (file+headline org-agenda-file-note "QuickNotes") "* TODO [#C] %t %? :Inbox:\n %i\n"          :empty-lines 1)
+        ("i" "Ideas"      entry (file+headline org-agenda-file-note "QuickIdeas") "* TODO [#C] %t %? :Inbox:\n %i\n"          :empty-lines 1)
+
+        ("W" "Proj@work"     entry (file+headline org-agenda-file-project "Proj@work")   "* TODO [#B] [/] %? \n CREATED: %T\n %i\n"     :empty-lines 1)
+        ("R" "Proj@read"     entry (file+headline org-agenda-file-project "Proj@read")   "* TODO [#D] %? \n CREATED: %T\n %i\n"         :empty-lines 1)
+        ("I" "Proj@invest"   entry (file+headline org-agenda-file-project "Proj@invest") "* TODO [#D] %? \n CREATED: %T\n %i\n"         :empty-lines 1)
+        ("O" "Proj@other"    entry (file+headline org-agenda-file-project "Proj@other")  "* TODO [#E] %? \n CREATED: %T\n %i\n"         :empty-lines 1)
         )
       )
 
@@ -81,20 +103,20 @@
 ;; (autoload 'remember "remember" nil t)
 ;; (define-key global-map [f8] 'remember)
 ;; ;; (org-remember-insinuate)
-;; (setq org-remember-templates '(("New"      ?n "* %? %t \n %i\n %a"   "E:/Refine/Org/GTD/inbox.org" )
-;; 			       ("Task"     ?t "** TODO %?\n %i\n %a" "E:/Refine/Org/GTD/task.org" "Tasks")
-;; 			       ("Calendar" ?c "** TODO %?\n %i\n %a" "E:/Refine/Org/GTD/task.org" "Tasks")
-;; 			       ("Idea"     ?i "** %?\n %i\n %a"      "E:/Refine/Org/GTD/task.org" "Ideas")
-;; 			       ("Note"     ?r "* %?\n %i\n %a"       "E:/Refine/Org/GTD/note.org" )tps
-;; 			       ("Project"  ?p "** %?\n %i\n %a"      "E:/Refine/Org/GTD/project.org" %g)
+;; (setq org-remember-templates '(("New"   ?n "* %? %t \n %i\n %a"   "E:/Refine/GTD/inbox.org" )
+;; 			       ("Task"     ?t "** TODO %?\n %i\n %a" "E:/Refine/GTD/task.org" "Tasks")
+;; 			       ("Calendar" ?c "** TODO %?\n %i\n %a" "E:/Refine/GTD/task.org" "Tasks")
+;; 			       ("Idea"     ?i "** %?\n %i\n %a"      "E:/Refine/GTD/task.org" "Ideas")
+;; 			       ("Note"     ?r "* %?\n %i\n %a"       "E:/Refine/GTD/note.org" )tps
+;; 			       ("Project"  ?p "** %?\n %i\n %a"      "E:/Refine/GTD/project.org" %g)
 ;; 			       ))
 
 ;;; org-refile --------------------------------------------------------------------------
 (define-key global-map "\C-cr" 'org-refile)
-(setq org-agenda-files (list "E:/Refine/Org/GTD/task.org"
-                             "E:/Refine/Org/GTD/note.org"
-                             "E:/Refine/Org/GTD/project.org"
-			     "E:/Refine/Org/GTD/finished.org"
+(setq org-agenda-files (list (concat refine-directory "GTD/task.org")
+                             (concat refine-directory "GTD/note.org")
+                             (concat refine-directory "GTD/project.org")
+			     ;; "E:/Refine/GTD/finished.org"
 			     ))
 ;; (setq org-refile-targets  '((org-agenda-file-finished :maxlevel . 2)
 ;;                             ;; (org-agenda-file-canceled :maxlevel . 9)
@@ -130,26 +152,58 @@
 ;;; Archive --------------------------------------------------------------------------
 ;;; Command: C-c C-x C-s
 ;;location for archive
-(setq org-archive-location (concat org-directory "GTD/_archive/" (format-time-string "%Y%m") "_archive.org::datetree/* Archive from %s"))
+(setq org-archive-location (concat refine-directory "GTD/_archive/" (format-time-string "%Y%m") "_archive.org::datetree/* Archive from %s"))
 ;;information added to property when a subtree is moved
 (setq org-archive-save-context-info '(time file ltags itags todo category olpath))
 
-;;; org-mobile
-(setq org-mobile-directory  (concat org-directory "GTD/MobileOrg/"))
-(setq org-mobile-files (list
-			(concat org-directory "GTD/")))
-			;; (org-agenda-dir)))
-(setq org-mobile-inbox-for-pull
-      (concat org-directory "GTD/from_mobile.org"))
+;;; org-mobile -------------------------------------------------------------------------
+(setq org-mobile-directory  (concat refine-directory "GTD/MobileOrg/"))
+(setq org-mobile-encryption-tempfile (concat org-mobile-directory "orgtmpcrypt") )
+     (unless (file-exists-p org-mobile-encryption-tempfile)
+       (shell-command (concat "touch "
+                              org-mobile-encryption-tempfile)))
+
+(setq org-mobile-files org-agenda-files)
+;; (setq org-mobile-files (list (concat refine-directory "GTD/")))
+(setq org-mobile-inbox-for-pull (concat refine-directory "GTD/from_mobile.org"))
+;; (setq org-mobile-inbox-for-pull (concat refine-directory "GTD/from-mobile.org"))
+;;      (unless (file-exists-p org-mobile-inbox-for-pull)
+;;        (shell-command (concat "touch " org-mobile-inbox-for-pull)))
+
+(add-hook 'after-init-hook 'org-mobile-pull)
+(add-hook 'kill-emacs-hook 'org-mobile-push) 
+;;; moble sync -------------------------------------------------------------------------
+(defvar org-mobile-sync-timer nil)
+(defvar org-mobile-sync-idle-secs (* 60 10))
+(defun org-mobile-sync ()
+  "enable mobile org idle sync"
+  (interactive)
+  (org-mobile-pull)
+  (org-mobile-push))
+
+(defun org-mobile-sync-enable ()
+  "enable mobile org idle sync"
+  (interactive)
+  (setq org-mobile-sync-timer
+        (run-with-idle-timer org-mobile-sync-idle-secs t
+                             'org-mobile-sync)))
+
+(defun org-mobile-sync-disable ()
+  "disable mobile org idle sync"
+  (interactive)
+  (cancel-timer org-mobile-sync-timer))
+
+(org-mobile-sync-enable)
 
 ;;; org-pomodoro --------------------------------------------------------------------
 ;; C-c C-x C-i :start clock（donnot show on spaceline）/ clock in
 ;; C-c C-x C-o :stop clock                             / clock out
 ;; C-c C-x C-r :make dynamic table
-;;  C-c C-x C-r:refresh manual 
+;; C-c C-x C-r :refresh manual 
 (global-set-key "\C-xps" 'org-pomodoro)                       ;; start org-pomodoro
-(global-set-key "\C-xpx" 'spaceline-toggle-org-pomodoro-off)  ;; turn-off org-pomodoro
-(global-set-key "\C-xpk" 'org-pomodoro-kill)
+(global-set-key "\C-xpv" 'spaceline-toggle-org-pomodoro-off)  ;; turn-off org-pomodoro
+;; (global-set-key "\C-xpk" 'org-pomodoro-kill)                  ;; stop?
+(global-set-key "\C-xpx" 'org-pomodoro-extend-last-clock)     ;; stop
 (use-package org-pomodoro
   :config
   (setq org-pomodoro-audio-player "mplayer")

@@ -20,7 +20,7 @@
 
 ;;; emms package entrance.
 (require 'emms-packages)
-(require 'emms-kbd)
+;; (require 'emms-kbd)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (with-eval-after-load 'emms

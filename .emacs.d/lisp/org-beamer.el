@@ -52,33 +52,35 @@
                 \\usetheme{CambridgeUS}    % red    space
                 %\\usetheme{AnnArbor}      % yellow space
                 %\\usetheme{Berlin}        % top three item, overview
-                %\\usetheme{Boadilla}
-                %\\usetheme{Darmstadt}     % top double ite, overview
+                %\\usetheme{Boadilla}      % purple theme
+                %\\usetheme{Darmstadt}     % blue, top double item, overview
                 
                 \\usecolortheme[named=blue]{structure}
-                %\\usecolortheme{wolverine}	 % [blue & yellow & orange] item; {crane}% orange
+                %\\usecolortheme{wolverine}	  % [blue & yellow & orange] item; {crane}% orange
                 %\\useoutertheme{infolines}
                 
-                %\\usefonttheme[onlymath]{serif}                
+                \\usefonttheme[onlymath]{serif}                
                 
                 \\setbeamersize{text margin left=10mm, text margin right=10mm}
-                \\setbeamertemplate{items}[circle]  	   	   % default=triangle, ball, circle, rectangle
+                \\setbeamertemplate{items}[circle]     % default=triangle, ball, circle, rectangle
                 \\setbeamertemplate{blocks}[rounded][shadow=true]
                 \\setbeamertemplate{bibliography item}[text]
-                %\\setbeamertemplate{navigation symbols}{}         % Remove navigation icon
-                \\setbeamercolor{normal text}{fg=black}		   % foreground color,default black
+                %\\setbeamertemplate{navigation symbols}{}    % Remove navigation icon
+                \\setbeamercolor{normal text}{fg=black}	      % foreground color,default black
                 \\setbeamercolor{structure}{fg=blue}
                 \\graphicspath{pic file folder}
                 
                 \\AtBeginBibliography{\\footnotesize}
-                \\AtBeginSection{\\begin{frame}{Outline}   \\tableofcontents[currentsection] \\end{frame} }
+                \\AtBeginSection{\\begin{frame}{Outline}   
+                \\tableofcontents[currentsection]
+                \\end{frame} }
 
                 % --- titile --- % ---------------- % ---------------- % ---------------- %
                 \\title[BeamerTitle]{Beamer template}
                 \\subtitle[option]{Unity of knowledge and action}
                 \\author{SHI WENHUA}
                 \\date{\\today}
-                \\institute[BeamerInstitute]{
+                \\institute[Techyauld]{
                   Department of Customer Service\\\\
                   Beijing techyauld Technology Development Co. Ltd.\\\\
                   6th Zone 2nd Floor, Building 21st, Zpark, Haidian District, Beijing 100193, P.R.China\\\\[1ex]
@@ -87,9 +89,22 @@
                 % --- footnote --- % ---------------- % ---------------- % ---------------- %
                 \\usepackage[absolute,overlay]{textpos}
                 \\newenvironment{reference}[2]{
-                  \\begin{textblock*}{\\textwidth}(#1,#2)
-                     \\footnotesize\\it\\bgroup\\color{red!50!black}}{\\egroup\\end{textblock*}}"
+                  \\begin{textblock*}{
+                     \\textwidth}(#1,#2)
+                     \\footnotesize\\it\\bgroup\\color{red!50!black}}{\\egroup
+                 \\end{textblock*}}"
 
+	       ("\\section{%s}" . "\\section*{%s}")
+               ("\\begin{frame}[fragile]\\frametitle{%s}"
+                "\\end{frame}"
+                "\\begin{frame}[fragile]\\frametitle{%s}"
+                "\\end{frame}")))
+
+;; #+LaTeX_CLASS: beamer
+(add-to-list 'org-latex-classes
+             '("beamer-input"
+               "\\documentclass[compress,xcolor=dvipsnames,svgnames,x11names,11pt,bigger,presentation,notheorems]{beamer}
+               \\input{D:/Program Files (x86)/Emacs/myemacs/.emacs.d/option/preface-for-beamer.tex}"
 	       ("\\section{%s}" . "\\section*{%s}")
                ("\\begin{frame}[fragile]\\frametitle{%s}"
                 "\\end{frame}"

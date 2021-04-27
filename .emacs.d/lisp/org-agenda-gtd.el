@@ -4,17 +4,17 @@
 
 ;;; org-agenda ---------------------------------------------------------------------------
 (defvar org-agenda-dir "" "gtd org files location")
-(setq-default org-agenda-dir "E:/Refine/Org/GTD/")
+(setq-default org-agenda-dir "E:/Refine/GTD/")
 (setq org-agenda-compact-blocks t)    ;; Compact the block agenda view
 
 ;;; org-agenda files && directory.
-(setq org-agenda-files '("E:/Refine/Org/GTD/"))
+(setq org-agenda-files '("E:/Refine/GTD/"))
 (setq org-agenda-file-task (expand-file-name "task.org" org-agenda-dir))
 (setq org-agenda-file-note (expand-file-name "note.org" org-agenda-dir))
 (setq org-agenda-file-project (expand-file-name "project.org" org-agenda-dir))
 (setq org-agenda-file-calendar (expand-file-name "calendar.org" org-agenda-dir))
-(setq org-agenda-file-finished (expand-file-name "finished.org" org-agenda-dir))
-(setq org-agenda-file-canceled (expand-file-name "canceled.org" org-agenda-dir))
+;; (setq org-agenda-file-finished (expand-file-name "finished.org" org-agenda-dir))
+;; (setq org-agenda-file-canceled (expand-file-name "canceled.org" org-agenda-dir))
 
 (setq org-highest-priority ?A)
 (setq org-lowest-priority  ?E)
@@ -23,7 +23,8 @@
       '((?A . (:background "yellow"     :foreground "red"       :weight bold))
         (?B . (:background "DodgerBlue" :foreground "white"     :weight bold))
         (?C . (:background "pink"       :foreground "DarkGreen" :weight bold))
-        (?D . (:background "cyan"       :foreground "purple"    :weight bold))
+        ;; (?D . (:background "cyan"       :foreground "purple"    :weight bold))
+        (?D . (:background "yellow"     :foreground "red"       :weight bold))
         (?E . (:background "green"      :foreground "black"5     :weight bold))
         ))
 (global-set-key "\C-ca" 'org-agenda)
@@ -38,43 +39,45 @@
 (setq org-agenda-custom-commands
       '(
         ("w" . "TaskScheme")
-        ("wa" "    important &&     urgent" tags-todo "+PRIORITY=\"A\"")
-        ("wb" "    important && not urgent" tags-todo "-weekly-monthly-daily+PRIORITY=\"B\"")
-        ("wc" "not important && not urgent" tags-todo "+PRIORITY=\"C\"")
-        ("g" "GTD View"
-	 (
+        ("wa" "     important &&     urgent" tags-todo "+PRIORITY=\"A\"")
+        ("wb" "     important && not urgent" tags-todo "+2Quadrant")
+        ("wc" " not important &&     urgent" tags-todo "+period")
+        ;; ("wb" "    important && not urgent" tags-todo "-weekly-monthly-daily+PRIORITY=\"B\"")
+        ;; ("wc" "not important && not urgent" tags-todo "+PRIORITY=\"C\"")
+        ;; ("g" "GTD View"
+	;;  (
 	  ;; (stuck "") ;; review stuck projects as designated by org-stuck-projects
-          (tags-todo "Inbox")
-          (tags-todo "Context")
-          (tags-todo "Waiting")
-          (tags-todo "Project")
-          (tags "Someday")
-          (tags "Reference")
-          (tags "Transh")
-          ))
+          ;; (tags-todo "Inbox")
+          ;; (tags-todo "Context")
+          ;; (tags-todo "Waiting")
+          ;; (tags-todo "Project")
+          ;; (tags "Someday")
+          ;; (tags "Reference")
+          ;; (tags "Transh")
+          ;; ))
 	("v" . "Agenda view")
         ("vp" "Agenda for all projects"
-	 tags "Project"
+	 tags "All Project"
          (
 	  ;; (org-agenda-skip-function 'tjh/org-agenda-skip-only-timestamp-entries)
           (org-agenda-overriding-header "Agenda for all projects: "))
-	 "e:/Refine/Org/GTD/exportview.html")   ;; org-store-agenda-views - export files.
-	("vt" "Agenda view for all finished tasks"
-	 todo "DONE|CANCELED"
-	 (
-	  ;; (org-agenda-skip-function 'tjh/org-agenda-skip-unfinished-entries)
-           (org-agenda-overriding-header "All finished tasks: "))
-          "e:/Refine/Org/GTD/exportview.org")
-	("vu" "Inbox for all unscheduled TODOs"
+	 "e:/Refine/GTD/exportview.html")   ;; org-store-agenda-views - export files.
+	;; ("vt" "Agenda view for all finished tasks"
+	;;  todo "DONE|CANCELED"
+	;;  (
+	;;   ;; (org-agenda-skip-function 'tjh/org-agenda-skip-unfinished-entries)
+        ;;    (org-agenda-overriding-header "All finished tasks: "))
+        ;;   "e:/Refine/GTD/exportview.org")	
+	("vu" "ITEMs unscheduled"
 	 alltodo ""
           ((org-agenda-skip-function 'tjh/org-agenda-skip-scheduled-entries)
-           (org-agenda-overriding-header "Inbox items: "))
-          "e:/Refine/Org/GTD/exportview.org")
-        ("vd" "Agenda view for all no deadlines"
+           (org-agenda-overriding-header "ITEMs unscheduled: "))
+          "e:/Refine/GTD/exportview.org")
+        ("vd" "ITEMs no deadlines"
 	 alltodo ""
          ((org-agenda-skip-function 'tjh/org-agenda-skip-not-deadline-entries)
-          (org-agenda-overriding-header "All deadlines: "))
-         "e:/Refine/Org/GTD/wxportview.org")
+          (org-agenda-overriding-header "ITEMs no deadlines: "))
+         "e:/Refine/GTD/exportview.org")
 	))
 
 ;; Skip entries which only have timestamp but no TODO keywords.
