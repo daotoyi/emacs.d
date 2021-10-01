@@ -4,11 +4,16 @@
 
 ;;; org-agenda ---------------------------------------------------------------------------
 (defvar org-agenda-dir "" "gtd org files location")
-(setq-default org-agenda-dir "E:/Refine/GTD/")
 (setq org-agenda-compact-blocks t)    ;; Compact the block agenda view
 
+(when (eq system-type 'windows-nt)
+  (setq-default org-agenda-dir "E:/Refine/GTD/")
+  (setq org-agenda-files '("E:/Refine/GTD/")))
+(when (eq system-type 'gnu/linux)
+  (setq-default org-agenda-dir "/mnt/e/Refine/GTD/")
+  (setq org-agenda-files '("/mnt/e/Refine/GTD/")))
+
 ;;; org-agenda files && directory.
-(setq org-agenda-files '("E:/Refine/GTD/"))
 (setq org-agenda-file-task (expand-file-name "task.org" org-agenda-dir))
 (setq org-agenda-file-note (expand-file-name "note.org" org-agenda-dir))
 (setq org-agenda-file-project (expand-file-name "project.org" org-agenda-dir))

@@ -8,8 +8,11 @@
 ;; .emacs.d/lisp/extra-el
 (require 'unicad)            ;; recognize encoding automaticly
 (require 'lazy-set-key)      ;; unavalible from source install
-(require 'find-by-pinyin-dired)
 (require 'ox-jekyll-md)      ;; org export md. ;;(eval-after-load "org" '(require 'ox-md nil t))
+
+(when (eq system-type 'windows-nt)
+  (require 'find-by-pinyin-dired)
+  )
 
 (use-package magit)
 (use-package htmlize)
@@ -26,23 +29,24 @@
   :config
   (exec-path-from-shell-initialize))
 
-(use-package fcitx           ;; fcixt --- switch ficxt when in or out evi-mode
-  :defer nil
-  :after exec-path-from-shell
-  :config
-  (fcitx-prefix-keys-setup)    ;;  (fcitx-prefix-keys-add "C-c") and "C-x"
-  (fcitx-prefix-keys-turn-on)
-  (fcitx-evil-turn-on)
-  
-  (fcitx-M-x-turn-on)
-  (fcitx-shell-command-turn-on)
+;;
+;;   :defer nil
+;;   :after exec-path-from-shell
+;;   :config
+;;   (fcitx-prefix-keys-setup)    ;;  (fcitx-prefix-keys-add "C-c") and "C-x"
+;;   (fcitx-prefix-keys-turn-on)
+;;   (fcitx-evil-turn-on)
+;;   
+;;   (fcitx-M-x-turn-on)
+;;   (fcitx-shell-command-turn-on)
+;; 
+;;   (fcitx-eval-expression-turn-on)
+;;   (fcitx-isearch-turn-on)
+;;   (fcitx-read-funcs-turn-on)
+;;   ;; (fcitx-aggressive-setup)
+;;   ;; (fcitx-prefix-keys-turn-off)
+;;   )
 
-  (fcitx-eval-expression-turn-on)
-  (fcitx-isearch-turn-on)
-  (fcitx-read-funcs-turn-on)
-  ;; (fcitx-aggressive-setup)
-  ;; (fcitx-prefix-keys-turn-off)
-  )
 ;; (use-package sis   ;; smart-input-source（ensure each language only one input method)
 ;;   :config
 ;;   (sis-global-cursor-color-mode t)
@@ -285,7 +289,10 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; bongo ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'general)
-(add-to-list 'exec-path "d:/Program Files/MPlayer for Windows/")
+(when (eq system-type 'windows-nt)
+  (add-to-list 'exec-path "d:/Program Files/MPlayer for Windows/"))
+(when (eq system-type 'gnu/linux)
+  (add-to-list 'exec-path "/mnt/d/Program Files/MPlayer for Windows/"))
 (use-package bongo
   :commands bongo-playlist
   :general
@@ -302,12 +309,16 @@
 	   "r" 'bongo-rename-line
 	   "v" 'volume)
   :custom
+  (when (eq system-type 'windows-nt)
+    (bongo-default-directory "e:/Recreation/Music/"))
+  (when (eq system-type 'gnu/linux)
+    (bongo-default-directory "/mnt/e/Recreation/Music/"))
   (bongo-enabled-backends '(mplayer))
-  (bongo-default-directory "e:/Recreation/Music/")
   (bongo-insert-album-covers t)
   (bongo-album-cover-size 100)
   (bongo-mode-line-indicator-mode nil)
   )
+
 ;; (setq bongo-custom-backend-matchers
 ;;            '((vlc local-file "mp3")
 ;;              (speexdec local-file "speex")
@@ -315,29 +326,30 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package pdf-tools
-  :pin manual  ;; manual update
-  :config
-  (pdf-tools-install)
-  (setenv "PATH" (concat "d:\\msys64\\mingw64\\bin;" (getenv "PATH")))
-  (setq-default pdf-view-display-size 'fit-width)
-  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+(when (eq system-type 'windows-nt)
+  (use-package pdf-tools
+    :pin manual  ;; manual update
+    :config
+    (pdf-tools-install)
+    ;; (setenv "PATH" (concat "d:\\msys64\\mingw64\\bin;" (getenv "PATH")))
+    (setq-default pdf-view-display-size 'fit-width)
+    (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
 
-  ;; make it default
-  (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
-     TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
-     TeX-source-correlate-start-server t)
-  (add-hook 'TeX-after-compilation-finished-functions
-	    #'TeX-revert-document-buffer)
+    ;; make it default
+    (setq TeX-view-program-selection '((output-pdf "PDF Tools"))
+	  TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+	  TeX-source-correlate-start-server t)
+    (add-hook 'TeX-after-compilation-finished-functions
+	      #'TeX-revert-document-buffer)
 
-  ;; play well with Emacs linum-mode. 
-  (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
+    ;; play well with Emacs linum-mode. 
+    (add-hook 'pdf-view-mode-hook (lambda() (linum-mode -1)))
   
-  :custom
-  ;; automatically annotate highlights
-  (pdf-annot-activate-created-annotations t "automatically annotate highlights")
+    :custom
+    ;; automatically annotate highlights
+    (pdf-annot-activate-created-annotations t "automatically annotate highlights")
     ;; or (setq pdf-annot-activate-created-annotations t)
-   )
+ ))
 
 ;;; vterm    ;;"VTerm needs module support. compile Emacs with the --with-modules option!
 ;; (use-package vterm)

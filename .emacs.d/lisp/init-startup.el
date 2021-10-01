@@ -58,8 +58,12 @@
 (setq display-time-use-mail-icon t)
 (setq time-stamp-format "%:u %02m/%02d/%04y %02H02M02S")  ;; optional.
 
-
-(setq default-directory "e:/Refine/")
+(when (eq system-type 'windows-nt)
+  (setq default-directory "e:/Refine/")
+  )
+(when (eq system-type 'gnu/linux)
+  (setq default-directory "/mnt/e/Refine/")
+  )
 (setq make-backup-files nil             ;; Settings for backup files
       auto-save-default nil)		;; auto-save && auto-backup files 
 (setq-default make-backup-files nil)    ;; tmp file

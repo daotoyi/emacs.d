@@ -14,9 +14,13 @@
   (require 'org-beamer)     ;; should be required after org-latex
   (require 'ox-latex-chinese)
   (setq org-startup-indented t
-	org-src-fontify-natively t		;; highlight
-	refine-directory "E:/Refine/"
+	org-src-fontify-natively t))		;; highlight
+(when (eq system-type 'windows-nt)
+  (setq refine-directory "E:/Refine/"
 	org-directory "E:/Refine/Org/"))
+(when (eq system-type 'gnu/linux)
+  (setq refine-directory "/mnt/e/Refine/"
+	org-directory "/mnt/e/Refine/Org/"))
 
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (add-to-list 'auto-mode-alist '("\\.sh\\'" . org-mode))
@@ -81,21 +85,21 @@
 (setq org-default-notes-file (concat refine-directory "GTD/inbox.org"))
 (setq org-capture-templates
       '(
-        ("f" "Task@quadrant1"  entry (file+headline org-agenda-file-task "Task&quadrant1")  "* TODO [#A] %? :1Quadrant:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
-        ("s" "Task@quadrant2"  entry (file+headline org-agenda-file-task "Task&quadrant2")  "* TODO [#B] %? :2Quadrant:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
-        ("t" "Task@quadrant3"  entry (file+headline org-agenda-file-task "Task&quadrant3")  "* TODO [#C] %? :3Quadrant:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
-        ("w" "Task@work&Goal"  entry (file+headline org-agenda-file-task "Task@work&goal")  "* TODO [#C] %? :Inbox:    \n SCHEDULED: %T\n %i\n" :empty-lines 1)
-        ("l" "Task@learn" entry (file+headline org-agenda-file-task "Learning")   "* TODO [#D] %? :Inbox:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
-        ("h" "Task@hobby" entry (file+headline org-agenda-file-task "Hobbies")    "* TODO [#D] %? :Inbox:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
-        ("o" "Task@other" entry (file+headline org-agenda-file-task "Others")     "* TODO [#E] %? :Inbox:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
-        ;; ("o" "Other"      entry (file+headline org-agenda-file-task "Others")     "* TODO [#D] %?\n CREATED: %T\n %i\n"         :empty-lines 1)
-        ("n" "Notes"      entry (file+headline org-agenda-file-note "QuickNotes") "* TODO [#C] %t %? :Inbox:\n %i\n"          :empty-lines 1)
-        ("i" "Ideas"      entry (file+headline org-agenda-file-note "QuickIdeas") "* TODO [#C] %t %? :Inbox:\n %i\n"          :empty-lines 1)
+        ("1" "Task@quadrant1"  entry (file+headline org-agenda-file-task "Task&quadrant1")  "* TODO [#A] %? :1Quadrant:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("2" "Task@quadrant2"  entry (file+headline org-agenda-file-task "Task&quadrant2")  "* TODO [#B] %? :2Quadrant:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("3" "Task@quadrant3"  entry (file+headline org-agenda-file-task "Task&quadrant3")  "* TODO [#C] %? :3Quadrant:\n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("w" "Task@work&Goal"  entry (file+headline org-agenda-file-task "Task@work&goal")  "* TODO [#C] %?            \n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("o" "Task@others"     entry (file+headline org-agenda-file-task "Task@others")     "* TODO [#C] %?            \n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("t" "Learning@tools"  entry (file+headline org-agenda-file-task "Learning@tools")  "* TODO [#D] %?            \n SCHEDULED: %T\n %i\n" :empty-lines 1)
+        ("n" "Notes"           entry (file+headline org-agenda-file-note "QuickNotes") "* TODO [#C] %t %? :Inbox:\n %i\n"          :empty-lines 1)
+        ("i" "Ideas"           entry (file+headline org-agenda-file-note "QuickIdeas") "* TODO [#C] %t %? :Inbox:\n %i\n"          :empty-lines 1)
 
         ("W" "Proj@work"     entry (file+headline org-agenda-file-project "Proj@work")   "* TODO [#B] [/] %? \n CREATED: %T\n %i\n"     :empty-lines 1)
-        ("R" "Proj@read"     entry (file+headline org-agenda-file-project "Proj@read")   "* TODO [#D] %? \n CREATED: %T\n %i\n"         :empty-lines 1)
-        ("I" "Proj@invest"   entry (file+headline org-agenda-file-project "Proj@invest") "* TODO [#D] %? \n CREATED: %T\n %i\n"         :empty-lines 1)
-        ("O" "Proj@other"    entry (file+headline org-agenda-file-project "Proj@other")  "* TODO [#E] %? \n CREATED: %T\n %i\n"         :empty-lines 1)
+        ("R" "Proj@read"     entry (file+headline org-agenda-file-project "Proj@read")   "* TODO [#D] %?     \n CREATED: %T\n %i\n"     :empty-lines 1)
+        ("I" "Proj@invest"   entry (file+headline org-agenda-file-project "Proj@invest") "* TODO [#D] %?     \n CREATED: %T\n %i\n"     :empty-lines 1)
+        ("H" "Proj@hobby"    entry (file+headline org-agenda-file-project "Proj@hobby")  "* TODO [#D] %?     \n CREATED: %T\n %i\n"     :empty-lines 1)
+        ("O" "Proj@other"    entry (file+headline org-agenda-file-project "Proj@other")  "* TODO [#E] %?     \n CREATED: %T\n %i\n"     :empty-lines 1)
+        ("r" "Proj@refine"   entry (file+headline org-agenda-file-project "Proj@refine") "* TODO [#D] %?     \n SCHEDULED: %T\n %i\n"   :empty-lines 1)
         )
       )
 

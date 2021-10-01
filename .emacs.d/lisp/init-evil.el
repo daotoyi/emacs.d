@@ -1,5 +1,7 @@
 ;;; package --- Summary --- vim model settings
 ;;; Commentary:
+(when (eq system-type 'gnu/linux)
+   (setq evil-want-C-i-jump nil))
 
 (use-package evil
   :defer nil 
@@ -39,6 +41,9 @@
 	  )))
   )
 
+(when evil-want-C-i-jump
+  (define-key evil-motion-state-map (kbd "C-i") 'evil-jump-forward))
+
 (use-package window-numbering
   :defer 2
   :config
@@ -50,7 +55,9 @@
   (global-evil-surround-mode))
 
 ;; Evil-nerd-commenter
-(evilnc-default-hotkeys)	;; activate
+(when (eq system-type 'windows-nt)
+  (evilnc-default-hotkeys)	;; activate
+  )
 (define-key evil-normal-state-map (kbd ",/") 'evilnc-comment-or-uncomment-lines)
 (define-key evil-visual-state-map (kbd ",/") 'evilnc-comment-or-uncomment-lines)
 
