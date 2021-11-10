@@ -1,0 +1,4 @@
+(
+ (:id "sha1:306e34699eeabfc90ddbe0b5d0fd1655957338b5" :fingerprint "sha1:0e:ed:64:e2:cf:b8:1c:b4:56:67:d1:88:60:96:44:d6:17:a1:6b:dd" :host "elpa.emacs-china.org:443" :conditions (:no-host-match :expired :invalid))
+ (:id "sha1:85b31c268009209a8d3c5387033b219264f7e62b" :fingerprint "sha1:0c:bd:68:cb:c0:01:e2:ad:93:0d:b9:3b:77:09:2e:47:9c:de:6b:28" :host "melpa.org:443" :conditions (:expired :invalid))
+)

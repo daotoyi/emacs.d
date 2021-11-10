@@ -1,7 +1,7 @@
 # EmacsCofig  emacs.d/init.el
 
 ## 1 GiteeClone 
-**URL**[ git@gitee.com:daotoyi/emacs.d.git](git@gitee.com:daotoyi/emacs.d.git)
+**URL**[ git@gitee.com:daotoyi/emacs.d.git](https://gitee.com/daotoyi/emacs.d.git)
 
 
 ## 2 Config

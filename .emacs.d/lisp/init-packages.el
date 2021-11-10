@@ -25,35 +25,36 @@
 	("C-c C-m r" . markdown-toc-refresh-toc)
 	("C-c C-m d" . markdown-toc-delete-toc)))
 
+(electric-pair-mode 1)
+
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
 
-;;
-;;   :defer nil
-;;   :after exec-path-from-shell
-;;   :config
-;;   (fcitx-prefix-keys-setup)    ;;  (fcitx-prefix-keys-add "C-c") and "C-x"
-;;   (fcitx-prefix-keys-turn-on)
-;;   (fcitx-evil-turn-on)
-;;   
-;;   (fcitx-M-x-turn-on)
-;;   (fcitx-shell-command-turn-on)
-;; 
-;;   (fcitx-eval-expression-turn-on)
-;;   (fcitx-isearch-turn-on)
-;;   (fcitx-read-funcs-turn-on)
-;;   ;; (fcitx-aggressive-setup)
-;;   ;; (fcitx-prefix-keys-turn-off)
-;;   )
+  ; :defer nil
+  ; :after exec-path-from-shell
+  ; :config
+  ; (fcitx-prefix-keys-setup)    ;;  (fcitx-prefix-keys-add "C-c") and "C-x"
+  ; (fcitx-prefix-keys-turn-on)
+  ; (fcitx-evil-turn-on)
+;
+  ; (fcitx-M-x-turn-on)
+  ; (fcitx-shell-command-turn-on)
+;
+  ; (fcitx-eval-expression-turn-on)
+  ; (fcitx-isearch-turn-on)
+  ; (fcitx-read-funcs-turn-on)
+  ; (fcitx-aggressive-setup)
+  ; (fcitx-prefix-keys-turn-off)
+  ; )
 
-;; (use-package sis   ;; smart-input-source（ensure each language only one input method)
-;;   :config
-;;   (sis-global-cursor-color-mode t)
-;;   (sis-ism-lazyman-config nil "rime" 'native)
-;;   (sis-global-respect-mode t)
-;;   (sis-global-context-mode t)
-;;   (sis-global-inline-mode t))
+; (use-package sis   ;; smart-input-source（ensure each language only one input method)
+  ; :config
+  ; (sis-global-cursor-color-mode t)
+  ; (sis-ism-lazyman-config nil "rime" 'native)
+  ; (sis-global-respect-mode t)
+  ; (sis-global-context-mode t)
+  ; (sis-global-inline-mode t))
 
 (use-package smooth-scrolling
   :defer nil
@@ -101,12 +102,12 @@
   ;; :hook (prog-mode . flycheck-mode))				;; Progress mode
 
 ;;;; (ido-mode t)   ;; projectile need it
-;; (use-package projectile
-;;   :defer 1 
-;;   :config
-;;   (setq projectile-cache-file (expand-file-name ".cache/projectile.cache" user-emacs-directory))
-;;   (projectile-mode 1)
-;;   (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))    ;; define leader key
+; (use-package projectile
+  ; :defer 1
+  ; :config
+  ; (setq projectile-cache-file (expand-file-name ".cache/projectile.cache" user-emacs-directory))
+  ; (projectile-mode 1)
+  ; (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))    ;; define leader key
 
 (use-package helm-projectile
   :defer nil
@@ -132,10 +133,10 @@
          ("<M-down>" . drag-stuff-down)))
 		   
 ;; (use-package helm
-;;   :bind (("M-x" . helm-M-x)    ;; = (bind-key "M-x" #'helm-M-x) 
-;;         ("C-x C-f" . helm-find-files))
-;;   :config
-;;   (helm-mode 1))   ;; global set
+  :bind (("M-x" . helm-M-x)    ;; = (bind-key "M-x" #'helm-M-x)
+        ("C-x C-f" . helm-find-files))
+  :config
+  (helm-mode 1))   ;; global set
 
 ;;;; -----ivy-counsel-swiper----- 
 ;;; 1 Enhance Search---ivy
@@ -168,14 +169,51 @@
          ("C-c f" . counsel-recentf)
          ("C-c g" . counsel-git)))
 
+;;; consel-etags
+; (use-package counsel-etags
+; (require 'counsel-etags)
+  ; :ensure t
+  ; :bind (("c-]" . counsel-etags-find-tag-at-point))
+  ; :init
+  ; (add-hook 'prog-mode-hook
+        ; (lambda ()
+          ; (add-hook 'after-save-hook
+            ; 'counsel-etags-virtual-update-tags 'append 'local)))
+  ; :config
+  ; (setq counsel-etags-update-interval 60)
+  ; (push "build" counsel-etags-ignore-directories)
+; )
+
+;;; ggtags (recommander universal-ctags)
+; (use-package ggtags
+(require 'ggtags)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+              (ggtags-mode 1))))
+  (define-key ggtags-mode-map (kbd "C-x g d") 'ggtags-find-definition)
+  (define-key ggtags-mode-map (kbd "C-x g s") 'ggtags-find-other-symbol)
+  (define-key ggtags-mode-map (kbd "C-x g h") 'ggtags-view-tag-history)
+  (define-key ggtags-mode-map (kbd "C-x g r") 'ggtags-find-reference)
+  (define-key ggtags-mode-map (kbd "C-x g f") 'ggtags-find-file)
+  (define-key ggtags-mode-map (kbd "C-x g c") 'ggtags-create-tags)
+  (define-key ggtags-mode-map (kbd "C-x g u") 'ggtags-update-tags)
+; )
+
+;;; gtags.el from globle(gtags/share/gtags)
+(require 'gtags)
+(setq c-mode-hook
+      '(lambda ()
+       (gtags-mode 1)))
+
 ;; (use-package smex
-;;   :config
-;;   ;; (smex-initialize)  ;; Can be omitted. This might cause a (minimal) delay
-;;   ;;; below M-x can be replaced by counsel-M-x.
-;;   (global-set-key(kbd "M-x") 'smex)
-;;   (global-set-key(kbd "M-X") 'smex-major-mode-commands)
-;;   (global-set-key(kbd "C-c C-c M-x") 'execute-extended-command)   ;; go back old M-x.
-;;   )
+  :config
+  ;; (smex-initialize)  ;; Can be omitted. This might cause a (minimal) delay
+  ;;; below M-x can be replaced by counsel-M-x.
+  (global-set-key(kbd "M-x") 'smex)
+  (global-set-key(kbd "M-X") 'smex-major-mode-commands)
+  (global-set-key(kbd "C-c C-c M-x") 'execute-extended-command)   ;; go back old M-x.
+  )
 
 (use-package ace-jump-mode
   :defer 2 
@@ -319,10 +357,10 @@
   (bongo-mode-line-indicator-mode nil)
   )
 
-;; (setq bongo-custom-backend-matchers
-;;            '((vlc local-file "mp3")
-;;              (speexdec local-file "speex")
-;;              (ignore local-file "wav")))
+; (setq bongo-custom-backend-matchers
+           ; '((vlc local-file "mp3")
+             ; (speexdec local-file "speex")
+             ; (ignore local-file "wav")))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 

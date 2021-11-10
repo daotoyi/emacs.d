@@ -8,18 +8,20 @@
 (package-initialize)	;;IMPORTANT, initialize package manager.
 
 (when (< emacs-major-version 24)
-	(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))  ;; can visit it
+	(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/")))  ;; can visit it
 (when (>= emacs-major-version 24)
     (require 'package)	
-    (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-			 ("melpa" . "http://elpa.emacs-china.org/melpa/")		;;emacs-china mirror melpa
-			 ("elpa" . "http://tromey.com/elpa/")
-			 ("org" . "http://mirrors.cloud.tencent.com/elpa/org/")
-			 ("org" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
-			 ("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-			 ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") 
+    (setq package-archives '(
+       ("gnu"   . "https://elpa.emacs-china.org/gnu/")
+       ("melpa" . "https://melpa.org/")		;;emacs-china mirror melpa
+       ("melpa" . "https://elpa.emacs-china.org/melpa/")		;;emacs-china mirror melpa
+			 ("elpa" . "https://tromey.com/elpa/")
+			 ("org" . "https://mirrors.cloud.tencent.com/elpa/org/")
+       ("org" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/org/")
+       ("gnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+       ("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
 			 )))
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 
 (setq package-check-signature nil) 			;; Occasionally, a signature verification failure occurs
 

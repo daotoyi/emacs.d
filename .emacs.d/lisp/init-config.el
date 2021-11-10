@@ -35,6 +35,7 @@
 ;;; -------------------------------------------------------------------------------------
 
 ;; auto-complete ({[]})
+(electric-pair-mode 1)
 (defun my-c-mode-auto-pair ()
   (interactive)
   (make-local-variable 'skeleton-pair-alist)
