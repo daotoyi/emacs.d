@@ -35,37 +35,37 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defconst my-projects-path "e:\\Refine\\Org" "My projects dir") 
+(defconst my-projects-path "e:\\Refine\\Org" "My projects dir")
 (defun goto-my-projects-dir ()
   (interactive)
-  (dired my-projects-path)) 
+  (dired my-projects-path))
 ;;(define-key-list global-map '(("C-x G p" goto-my-projects-dir)))
 (global-set-key (kbd "C-x G p") 'goto-my-projects-dir)
 
-(defconst my-tmp-path "e:/TMP/" "My tmp dir") 
+(defconst my-tmp-path "e:/TMP/" "My tmp dir")
 (defun goto-tmp-dir ()
   (interactive)
-  (dired my-tmp-path)) 
+  (dired my-tmp-path))
 (global-set-key (kbd "C-x G t") 'goto-tmp-dir)
 
 
 ;; Open dir
-(defconst my-Cdisk-path "c:/" "My Cdisk dir") 
+(defconst my-Cdisk-path "c:/" "My Cdisk dir")
 (defun goto-Cdisk-dir ()
   (interactive)
-  (dired my-Cdisk-path)) 
+  (dired my-Cdisk-path))
 (global-set-key (kbd "C-x G C") 'goto-Cdisk-dir)
 
-(defconst my-Ddisk-path "d:/" "My Ddisk dir") 
+(defconst my-Ddisk-path "d:/" "My Ddisk dir")
 (defun goto-Ddisk-dir ()
   (interactive)
-  (dired my-Ddisk-path)) 
+  (dired my-Ddisk-path))
 (global-set-key (kbd "C-x G D") 'goto-Ddisk-dir)
 
-(defconst my-Edisk-path "e:/" "My Edisk dir") 
+(defconst my-Edisk-path "e:/" "My Edisk dir")
 (defun goto-Edisk-dir ()
   (interactive)
-  (dired my-Edisk-path)) 
+  (dired my-Edisk-path))
 (global-set-key (kbd "C-x G E") 'goto-Edisk-dir)
 
 

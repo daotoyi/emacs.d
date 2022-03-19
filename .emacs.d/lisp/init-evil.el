@@ -14,31 +14,31 @@
       (global-evil-leader-mode)			;; activate before  evil-mode, and will be used in all status
       (setq evil-leader/in-all-states t)
         ;; (evil-leader/set-leader ",")
-	(setq evil-leader/leader "<SPC>")
+	    (setq evil-leader/leader "<SPC>")
         (evil-leader/set-key
-		"cl" 'evilnc-comment-or-uncomment-lines
-		"cc" 'evilnc-copy-and-comment-lines
+		      "cl" 'evilnc-comment-or-uncomment-lines
+		      "cc" 'evilnc-copy-and-comment-lines
          	"cp" 'evilnc-comment-or-uncomment-paragraphs
-		
-		;; "ff" 'find-file
-		"f" 'find-file
-		"b" 'switch-to-buffer
 
-		"0"  'select-window-0
-		"1"  'select-window-1
-		"2"  'select-window-2
-		"3"  'select-window-3
-		"4"  'select-window-4
-		"w/" 'split-window-right
-		"w-" 'split-window-below
+		      ;; "ff" 'find-file
+		      "f" 'find-file
+		      "b" 'switch-to-buffer
 
-		":"  'counsel-M-x
-		"wM" 'delete-other-windows
-	        
-		"jc" 'avy-goto-char
-		"jw" 'avy-goto-word
-		"jl" 'avy-goto-line
-	  )))
+		      "0"  'select-window-0
+		      "1"  'select-window-1
+		      "2"  'select-window-2
+		      "3"  'select-window-3
+		      "4"  'select-window-4
+		      "w/" 'split-window-right
+		      "w-" 'split-window-below
+
+		      ":"  'counsel-M-x
+		      "wM" 'delete-other-windows
+
+		      "jc" 'avy-goto-char
+		      "jw" 'avy-goto-word
+		      "jl" 'avy-goto-line
+	        )))
   )
 
 (when evil-want-C-i-jump

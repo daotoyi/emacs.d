@@ -57,7 +57,7 @@
 ;; (setq org-enforce-todo-dependencies t)    ;; main task cannot set done if subtask not finished.
 
 (setq	org-todo-keywords '((sequence "TODO(t!)" "NEXT(n)" "WAIT(w)" "|" "CANCEL(c@/!)" "DONE(d!)"))
-	org-todo-keyword-faces '(("NEXT"     . "orange")
+	org-todo-keyword-faces '(("NEXT"     . "cyan")
 	                         ("WAIT"  . "purple")
 	                         ("DONE"     . "green" )
 	                         ("CANCEL" . (:foreground "cyan" :weight bold))))
@@ -175,10 +175,11 @@
 ;;        (shell-command (concat "touch " org-mobile-inbox-for-pull)))
 
 (add-hook 'after-init-hook 'org-mobile-pull)
-(add-hook 'kill-emacs-hook 'org-mobile-push) 
+;; (add-hook 'kill-emacs-hook 'org-mobile-push) 
+
 ;;; moble sync -------------------------------------------------------------------------
 (defvar org-mobile-sync-timer nil)
-(defvar org-mobile-sync-idle-secs (* 60 10))
+(defvar org-mobile-sync-idle-secs (* 60 30))
 (defun org-mobile-sync ()
   "enable mobile org idle sync"
   (interactive)

@@ -50,7 +50,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq-default frame-title-format '("%f"))
-(setq frame-title-format "Emacs@%b")
+(setq frame-title-format "Emacs(daotoyi)@%b")
 (display-time-mode 1)
 (setq display-time-24hr-format t)
 (setq display-time-day-and-date t)
@@ -137,7 +137,7 @@
 ;;; -------------------------------------------------------------------------------------
 (setq inhibit-startup-screen t)					;; close startup windows
 (setq initial-scratch-message
-      "\n;; Configuration by Daoyi <gitee.com:daotoyi/emacsemacs.d>. \n;; Enjoy!\n\n")
+      "\n;; Configuration by Daoyi <gitee.com:daotoyi/emacs.d>. \n;; Enjoy!\n\n")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (provide 'init-startup)

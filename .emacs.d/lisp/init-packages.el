@@ -25,8 +25,6 @@
 	("C-c C-m r" . markdown-toc-refresh-toc)
 	("C-c C-m d" . markdown-toc-delete-toc)))
 
-(electric-pair-mode 1)
-
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
@@ -101,6 +99,7 @@
   :hook (after-init . global-flycheck-mode))		        ;; Global
   ;; :hook (prog-mode . flycheck-mode))				;; Progress mode
 
+
 ;;;; (ido-mode t)   ;; projectile need it
 ; (use-package projectile
   ; :defer 1
@@ -132,7 +131,7 @@
   :bind (("<M-up>". drag-stuff-up)
          ("<M-down>" . drag-stuff-down)))
 		   
-;; (use-package helm
+(use-package helm
   :bind (("M-x" . helm-M-x)    ;; = (bind-key "M-x" #'helm-M-x)
         ("C-x C-f" . helm-find-files))
   :config
@@ -199,14 +198,15 @@
   (define-key ggtags-mode-map (kbd "C-x g c") 'ggtags-create-tags)
   (define-key ggtags-mode-map (kbd "C-x g u") 'ggtags-update-tags)
 ; )
-
+;;;     
 ;;; gtags.el from globle(gtags/share/gtags)
 (require 'gtags)
 (setq c-mode-hook
       '(lambda ()
        (gtags-mode 1)))
 
-;; (use-package smex
+
+(use-package smex
   :config
   ;; (smex-initialize)  ;; Can be omitted. This might cause a (minimal) delay
   ;;; below M-x can be replaced by counsel-M-x.
@@ -348,9 +348,9 @@
 	   "v" 'volume)
   :custom
   (when (eq system-type 'windows-nt)
-    (bongo-default-directory "e:/Recreation/Music/"))
+    (setq bongo-default-directory "e:/Recreation/Music/"))
   (when (eq system-type 'gnu/linux)
-    (bongo-default-directory "/mnt/e/Recreation/Music/"))
+    (setq bongo-default-directory "/mnt/e/Recreation/Music/"))
   (bongo-enabled-backends '(mplayer))
   (bongo-insert-album-covers t)
   (bongo-album-cover-size 100)

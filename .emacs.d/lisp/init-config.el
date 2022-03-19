@@ -40,9 +40,14 @@
   (interactive)
   (make-local-variable 'skeleton-pair-alist)
   (setq skeleton-pair-alist '(
-    (?` ?` _ "''")
-    (?\( ? _ " )")
-    (?\[ ? _ " ]")
+    (?` ?` _ "``")
+    ; default (|) [|], nice!!
+    ; (?\(? _")")     ; ( |)
+    ; (?\[? _"]")     ; [ |]
+    ; (?\(?_ ")")     ; ( )|
+    ; (?\[?_ "]")     ; [ ]|
+    ; (?\( ? _ " )")  ; ( | )
+    ; (?\[ ? _ " ]")  ; [ | ]
     (?{ \n > _ \n ?} >)))
   (setq skeleton-pair t)
   (local-set-key (kbd "(") 'skeleton-pair-insert-maybe)
